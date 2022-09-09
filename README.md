@@ -113,10 +113,10 @@ Additionally, the code was improved to make it easier to read, and optimize diff
      ┏━━━━━━━━┓   ←    ┏━━━━━━━━━━━┓   ← →   ┏━━━━━━━━┓
      ┃ Model  ┣━━━━━━━━┫ ViewModel ┣━━━━━━━━━┫  View  ┃
      ┗━━━━━━━━┛        ┗━━━━━━━━━━━┛         ┗━━━━━━━━┛
-	 ↓		    ⇫
-     ┌───────┐	      ╔═══════════╗
-     │ fonts │        ║    Main   ║
-     └───────┘        ╚═══════════╝      
+	 ↓		     ⇫
+     ┌───────┐	       ╔═══════════╗
+     │ fonts │         ║   Main    ║
+     └───────┘         ╚═══════════╝      
 
 
 Main
