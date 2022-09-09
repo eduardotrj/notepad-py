@@ -113,52 +113,52 @@ Additionally, the code was improved to make it easier to read, and optimize diff
      ┏━━━━━━━━┓   ←    ┏━━━━━━━━━━━┓   ← →   ┏━━━━━━━━┓
      ┃ Model  ┣━━━━━━━━┫ ViewModel ┣━━━━━━━━━┫  View  ┃
      ┗━━━━━━━━┛        ┗━━━━━━━━━━━┛         ┗━━━━━━━━┛
-		 ↓					 ⇫
-	  ┌───────┐		   ╔═══════════╗
-      │ fonts │        ║    Main   ║
-      └───────┘        ╚═══════════╝      
+	 ↓		    ⇫
+     ┌───────┐	      ╔═══════════╗
+     │ fonts │        ║    Main   ║
+     └───────┘        ╚═══════════╝      
 
 
 Main
-└──────┤ start_notepad()	*(Run the app executing run() )*
+└──────┤ start_notepad()		*(Run the app executing run() )*
 
 
 ViewModel
-└───────────┤ run()				*(Call view.run())*
-			│ new_file()		*(Clean text_area)*
-			│ open_file()		*(Open a existend file)*
-			│ save_file()		*(Save a file in the system)*
-			│ save_as()			*(Save a file which determinate name)*
-			│ close_app()		*(Stop the app breaking mainloop)*
-			│ cut()				*(Call cut system action)*
-			│ copy()			*(Call copy system action)*
-			│ paste()			*(Call paste system action)*
-			│ select_all()		*(Select all string in text_area)*
-			│ print_time()		*(Print de current date and time)*
-			│ zoom_in()			*(Increase font size)*
-			│ zoom_out()		*(Decrease font size)*
-			│ zomm_reset()		*(Set default font size "9")*
-			│ switch_mode()		*(Switch between default and night mode)*		
+└───────────┤ run()			*(Call view.run())*
+	    │ new_file()		*(Clean text_area)*
+	    │ open_file()		*(Open a existend file)*
+	    │ save_file()		*(Save a file in the system)*
+	    │ save_as()			*(Save a file which determinate name)*
+	    │ close_app()		*(Stop the app breaking mainloop)*
+	    │ cut()			*(Call cut system action)*
+	    │ copy()			*(Call copy system action)*
+	    │ paste()			*(Call paste system action)*
+	    │ select_all()		*(Select all string in text_area)*
+	    │ print_time()		*(Print de current date and time)*
+	    │ zoom_in()			*(Increase font size)*
+	    │ zoom_out()		*(Decrease font size)*
+	    │ zomm_reset()		*(Set default font size "9")*
+	    │ switch_mode()		*(Switch between default and night mode)*		
 
 View
-└───────────┤ run()				*(call mainloop to start window app)*
-			│ make_frame()		*(Create the main framee or root)*
-			│ set_text_area()	*(Create a text widget called text_area)*
-			│ set_title()		*(Set the title name of the window)*
-			│ set_size()		*(Set the window size)*
-			│ set_font()		*(Set the font size)*
-			│ set_zoom()		*(Set the zoom quantity applied on the menu)*
-			│ set_menu()		*(Create the widget menu)*
-			│ set_file_menu()	*(Create and Add file_menu to widget menu)*
-			│ set_edit_menu()	*(Create and Add edit_menu to widget menu)*
-			│ set_view_menu()	*(Create and Add view_menu to widget menu)*
-			│ set_help_menu()	*(Create and Add help_menu to widget menu)*
-			│ show_about()		*(Show an informative window about)*
-			│ set_night_option()	*(Create and Add day_mode to widget menu)*
+└───────────┤ run()			*(call mainloop to start window app)*
+	    │ make_frame()		*(Create the main framee or root)*
+	    │ set_text_area()		*(Create a text widget called text_area)*
+	    │ set_title()		*(Set the title name of the window)*
+	    │ set_size()		*(Set the window size)*
+	    │ set_font()		*(Set the font size)*
+	    │ set_zoom()		*(Set the zoom quantity applied on the menu)*
+	    │ set_menu()		*(Create the widget menu)*
+	    │ set_file_menu()		*(Create and Add file_menu to widget menu)*
+	    │ set_edit_menu()		*(Create and Add edit_menu to widget menu)*
+	    │ set_view_menu()		*(Create and Add view_menu to widget menu)*
+	    │ set_help_menu()		*(Create and Add help_menu to widget menu)*
+	    │ show_about()		*(Show an informative window about)*
+	    │ set_night_option()	*(Create and Add day_mode to widget menu)*
 
 Model
 └───────────┤ apply_style()		*(Change the character to the style desired)
-		      └─────────────┤font	*(Dictionary with the different fonts styles)*
+              └─────────────┤font	*(Dictionary with the different fonts styles)*
 ```
 
 ## Files:
@@ -313,37 +313,37 @@ Dictionary with all different fonts styles saved character by character in a tup
 
 Font style code used:
 ```
-	          ┏━━━━━━━┳━━━━━━━┓
+	      ┏━━━━━━━┳━━━━━━━┓
  Font types:  ┃ Type  ┃ Style ┃	
 ┌┈┈┈┈┈┈┈┈┈┈┈┈┈┠───────╂───────┨┈┈┈┈┈┈┈┈┈┈┈┈┈┐
 ┊ Normal      ┃   n   ┃   n   ┃ Normal      ┊	type + style = font style
-┊	          ┃       ┃       ┃             ┊
+┊	      ┃       ┃       ┃             ┊
 ┊ Serif       ┃   f   ┃   i   ┃ Italic      ┊	Examples:
-┊	          ┃       ┃       ┃             ┊		Sans Italic style:  si		
+┊	      ┃       ┃       ┃             ┊		Sans Italic style:  si		
 ┊ Sans	      ┃   s   ┃   b   ┃ Bold        ┊		Sans bold style: 	sb
-┊	          ┃       ┃       ┃             ┊		Gothic Bold style: 	gb
+┊	      ┃       ┃       ┃             ┊		Gothic Bold style: 	gb
 ┊ Script      ┃   t   ┃   d   ┃ Italic/Bold ┊		Default font style: nn
-┊	          ┃       ┃       ┃             ┊
+┊	      ┃       ┃       ┃             ┊
 ┊ Gothic      ┃   g   ┃   k   ┃Strikethrough┊
-┊	          ┃       ┃       ┃             ┊
+┊	      ┃       ┃       ┃             ┊
 ┊ TypeWriter  ┃   w   ┃   u   ┃ Underline   ┊
-┊	          ┃       ┃       ┃             ┊
+┊	      ┃       ┃       ┃             ┊
 ┊ Small	      ┃   m   ┃       ┃             ┊
-┊	          ┃       ┃       ┃             ┊
+┊	      ┃       ┃       ┃             ┊
 ┊ Long	      ┃   l   ┃       ┃             ┊
-┊	          ┃       ┃       ┃             ┊
+┊	      ┃       ┃       ┃             ┊
 ┊ Futuristic  ┃   a   ┃       ┃             ┊
-┊	          ┃       ┃       ┃             ┊
+┊	      ┃       ┃       ┃             ┊
 ┊ highlighted ┃   h   ┃       ┃             ┊
-┊	          ┃       ┃       ┃             ┊
-┊	          ┃       ┃       ┃             ┊
+┊	      ┃       ┃       ┃             ┊
+┊	      ┃       ┃       ┃             ┊
 └┈┈┈┈┈┈┈┈┈┈┈┈┈┗━━━━━━━┻━━━━━━━┛┈┈┈┈┈┈┈┈┈┈┈┈┈┘
 
 ```
 
 Zoom and font size numbers and relation:
 ```
-	        ┏━━━━━━━┳━━━━━━━┓
+	    ┏━━━━━━━┳━━━━━━━┓
  Zoom List: ┃   %   ┃  Size ┃
 ┌┈┈┈┈┈┈┈┈┈┈┈┠───────╂───────┨
 ┊     0	    ┃  10   ┃   1   ┃
@@ -387,15 +387,15 @@ Options to change the `print_date()` format to so show the time and date.
 ```
 strftime:
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃ # dd/mm/YY			 ┃	16/09/2019		      ┃ d1 = today.strftime("%d/%m/%Y")       ┃
+┃ # dd/mm/YY		 ┃  16/09/2019	          ┃  today.strftime("%d/%m/%Y")           ┃
 ┃                        ┃                        ┃                                       ┃
-┃ # month, day and year	 ┃	September 16, 2019	  ┃	today.strftime("%B %d, %Y")           ┃
+┃ # month, day and year	 ┃  September 16, 2019    ┃  today.strftime("%B %d, %Y")          ┃
 ┃                        ┃                        ┃                                       ┃
-┃ # mm/dd/y				 ┃	09/16/19			  ┃	today.strftime("%m/%d/%y")            ┃
+┃ # mm/dd/y		 ┃  09/16/19	  	  ┃  today.strftime("%m/%d/%y")           ┃
 ┃                        ┃                        ┃                                       ┃
-┃ # Mth, day and year	 ┃	Sep-16-2019			  ┃	today.strftime("%b-%d-%Y")            ┃
+┃ # Mth, day and year	 ┃  Sep-16-2019	          ┃  today.strftime("%b-%d-%Y")           ┃
 ┃                        ┃                        ┃                                       ┃
-┃ # dd/mm/YY H:M:S		 ┃	25/06/2021 07:58:56	  ┃	today.strftime("%d/%m/%Y %H:%M:%S")   ┃
+┃ # dd/mm/YY H:M:S	 ┃  25/06/2021 07:58:56   ┃  today.strftime("%d/%m/%Y %H:%M:%S")  ┃
 ┃                        ┃                        ┃                                       ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 ```
