@@ -319,10 +319,10 @@ Font style code used:
 ┊ Normal      ┃   n   ┃   n   ┃ Normal      ┊	type + style = font style
 ┊	      ┃       ┃       ┃             ┊
 ┊ Serif       ┃   f   ┃   i   ┃ Italic      ┊	Examples:
-┊	      ┃       ┃       ┃             ┊		Sans Italic style:  si		
+┊	      ┃       ┃       ┃             ┊		Sans Italic style:      si		
 ┊ Sans	      ┃   s   ┃   b   ┃ Bold        ┊		Sans bold style: 	sb
 ┊	      ┃       ┃       ┃             ┊		Gothic Bold style: 	gb
-┊ Script      ┃   t   ┃   d   ┃ Italic/Bold ┊		Default font style: nn
+┊ Script      ┃   t   ┃   d   ┃ Italic/Bold ┊		Default font style:     nn
 ┊	      ┃       ┃       ┃             ┊
 ┊ Gothic      ┃   g   ┃   k   ┃Strikethrough┊
 ┊	      ┃       ┃       ┃             ┊
