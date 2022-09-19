@@ -112,6 +112,22 @@ class View(tk.Tk):
         style_menu.add_command(label="Bold", accelerator="Ctrl+B", command=lambda style= "fb": self.controller.take_text(style))
         style_menu.add_command(label="Italic", accelerator="Ctrl+I", command=lambda style= "fi": self.controller.take_text(style))
         style_menu.add_command(label="Italic Bold", accelerator="Ctrl+B", command=lambda style= "fd": self.controller.take_text(style))
+        
+        style_menu.add_command(label="Script", command=lambda style= "tn": self.controller.take_text(style))
+        style_menu.add_command(label="Script Bold", command=lambda style= "tb": self.controller.take_text(style))
+        style_menu.add_command(label="Gothic", command=lambda style= "gn": self.controller.take_text(style))
+        style_menu.add_command(label="Gothic Bold", command=lambda style= "gb": self.controller.take_text(style))
+        style_menu.add_command(label="Highlighted", command=lambda style= "hn": self.controller.take_text(style))
+        style_menu.add_command(label="Sans", command=lambda style= "sn": self.controller.take_text(style))
+        style_menu.add_command(label="Sans Italic", command=lambda style= "si": self.controller.take_text(style))
+        style_menu.add_command(label="Sans Bold", command=lambda style= "sb": self.controller.take_text(style))
+        style_menu.add_command(label="Sans Italic Bold", command=lambda style= "sd": self.controller.take_text(style))
+        style_menu.add_command(label="Typewriter", command=lambda style= "wn": self.controller.take_text(style))
+        style_menu.add_command(label="Bubble", command=lambda style= "bn": self.controller.take_text(style))
+        style_menu.add_command(label="Fullwidth", command=lambda style= "ln": self.controller.take_text(style))
+        style_menu.add_command(label="Super Index", command=lambda style= "mn": self.controller.take_text(style))
+
+
         style_menu.add_command(label="Remove style", accelerator="Ctrl+B", command=lambda style= "nn": self.controller.take_text(style))
     
         edit_menu.add_cascade(label="Style", menu=style_menu)
