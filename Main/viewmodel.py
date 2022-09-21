@@ -1,6 +1,7 @@
 
 import os
 from Main.view import View
+from Main.extraView import ExtraWindow
 from Main.model import Model
 import tkinter as tk 
 from tkinter.filedialog import *
@@ -11,9 +12,13 @@ class ViewModel(object):
     file = None
     select_text = ""
     
+
+    replace_word: str = ""
+    
     def __init__(self) -> None:
         self.model = Model()
         self.view = View(self)
+        # self.ex_view = ExtraWindow(self)
         
         
          # SHORTCUTS:
@@ -124,8 +129,16 @@ class ViewModel(object):
         pointer = self.view.text_area.index(tk.INSERT)
         self.view.text_area.insert(pointer,time)
         
+    
+    def search(self):
+        # Check if use too memory by creating new instances.
+        self.enable_replace = tk.StringVar()
+        self.search_word = tk.StringVar()
+        self.replace_word = tk.StringVar()    
+        self.search_view = ExtraWindow(self, "Search")
         
-        
+    
+            
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ VIEW FUNCTIONS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     
     # Apply zoom in base font-size  
     def zoom_in(self, event=1):
@@ -160,5 +173,44 @@ class ViewModel(object):
             self.view.day_mode = "🌙"
             self.view.menu_bar.entryconfig(5, label="🌙")
             
+            
+            
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ SEARCH FUNCTION ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+            
+    # TODO     Pending task    :
+    # Search inputs send to (search_word)  and (replace_word)
+    # For Search function:
+    #   ▪ Take all text_area text and save it in lowercase.
+    #   ▪ Disable styles too to "nn" style.
+    #   ▪ Make and array with all positions where (search_word) in text_area.
+    #   ▪ Send back the number or array elements to display it in (quantity_label).
+    #   ▪ Select the first position and allow move between with NEXT and BACK buttons.
+    
+    # For Replace function:
+    #   ▪ If enable_replace = True, replace_word>'',  and Accept → pressed: 
+    #       put on select text position.
+    #   ▪ When (enable_replace) = False, (replace_word) = ''.
+    
+    #! CLEAN MORE THE CODE specially extraView.
+            
+            
+            
+            
+    def search_text(self):
+        #search_word=
+        print(self.search_word.get())
+        if self.replace_word.get():
+            print(self.replace_word.get())
+        
+    def show_replace(self):       
+        if self.enable_replace.get() == 'true':
+            self.search_view.add_replace_option()
+        else:
+            self.search_view.remove_replace_option()
+        
+        
+    
+    
+    
 
         

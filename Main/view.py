@@ -23,6 +23,7 @@ class View(tk.Tk):
         self.controller = controller
         
         self._make_frame()
+        self.set_icon()
         self.set_title()
         self._set_menu()
         self.set_file_menu()
@@ -41,8 +42,10 @@ class View(tk.Tk):
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ WINDOW BUILDING ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
 
     def _make_frame(self):
-        self.frame= tk.Frame(self)
+        self.frame = tk.Frame(self)
         
+    def set_icon(self):
+        self.iconbitmap('Assets/Icons/NotePad_32.ico' )
           
     def set_text_area(self):
         self.text_area = tk.Text(self)
@@ -132,6 +135,7 @@ class View(tk.Tk):
     
         edit_menu.add_cascade(label="Style", menu=style_menu)
         edit_menu.add_separator()
+        edit_menu.add_command(label="Search", command=self.controller.search)
         edit_menu.add_command(label="Date/Time", command=self.controller.print_time)
         self.menu_bar.add_cascade(label="Edit", menu=edit_menu)
         
