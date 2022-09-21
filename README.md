@@ -298,7 +298,7 @@ Label: `day_mode`, shorcut: *Ctrl+M*, Command: **switch_mode()**
 **def show_about(self):** Show an informative window with a title and message.
 
 ### extraView.py
-
+```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓		
 ┃ Search:                            X ┃     ┃ 0,0                               X ┃
 ┃   ┌─────────────────┐   nº           ┃     ┃     ┌───────────────┐   nº          ┃
@@ -310,7 +310,7 @@ Label: `day_mode`, shorcut: *Ctrl+M*, Command: **switch_mode()**
 ┃   │  Back  │  │  Next  │  │ Accept │ ┃     ┃    │ Back │    │ Next │    │ Acpt │ ┃
 ┃   └────────┘  └────────┘  └────────┘ ┃     ┃    └──────┘    └──────┘    └──────┘ ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-
+```
 
 
 
