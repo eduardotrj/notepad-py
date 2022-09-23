@@ -195,7 +195,18 @@ class ViewModel(object):
     
     #! CLEAN MORE THE CODE specially extraView.
             
-                           
+    # Search_list take each find word position. Need to make first a loop to find all words.
+    # Use the array to move between and count total and current position.
+    
+    # Special characters?? 2 mains options:
+    #   Try to change all text:
+    #       - Needs to change all text, which could take more time.
+    #       - Total compatibility with any special character style.
+    #   Do a text_area.search(…) using self.search_word with each style.
+    #       - Will require less time.
+    #       - Only will be able to find complete style words: 𝑒𝓍𝒶𝓂𝓅𝓁𝑒 ☑, 𝑒𝓍𝒶𝓂𝐩𝐥𝐞	❎
+    
+    #   Another point to improve the optimization, could add a checkbox to search over styles too.
                
         
 
@@ -254,6 +265,7 @@ class ViewModel(object):
                 # add to the list, 'new index + (leng word)c
                 self.search_list.append(lastidx)
                 print(self.search_list)
+                
             #if dont find more words.
             except:
                 MessageBox.showinfo("Search complete","No further matches")
