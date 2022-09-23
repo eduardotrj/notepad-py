@@ -13,9 +13,9 @@ class ViewModel(object):
     
     file = None
     select_text = ""
-    
-
+    search_word: str = ""
     replace_word: str = ""
+    search_list = list()
     
     def __init__(self) -> None:
         self.model = Model()
@@ -135,7 +135,7 @@ class ViewModel(object):
     def search(self):
         # Check if use too memory by creating new instances.
         self.enable_replace = tk.StringVar()
-        self.search_word = tk.StringVar()
+        self.input_search = tk.StringVar()
         self.replace_word = tk.StringVar()    
         self.search_view = ExtraWindow(self, "Search")
         
@@ -202,51 +202,62 @@ class ViewModel(object):
             
             
     def search_text(self):
-        search_word = self.search_word.get()
-        search_list = list()
         
-        if search_word != self.search_word.get():
-            search_list.clear()
+        #self.search_word = self.search_word if self.search_word is not None else ""
+       
+        
+        # if S != current entry value → clean list and remove tags:: New search
+        print("Prime: ",self.search_word)
+        if self.search_word != self.input_search.get():
+            #print("ha entrado")
+            self.search_list.clear()
             self.view.text_area.tag_remove(tk.SEL, 1.0,"end-1c")
             
-        search_word = self.search_word.get()
-        
-        if search_word:
-            # Allows start again after check all words.
-            if search_list == []:
+        self.search_word = self.input_search.get()
+        print("secomd: ",self.search_word)
+        # if search exist: and list is empty, start in 1.0
+        if self.search_word:
+            #if list is not empty, move one position in the list.
+            print("search_list: ", self.search_list)
+            if self.search_list == []:
                 idx = "1.0"
+                print("ha entrado")
             else:
-                idx = search_list[-1]
-                print("idx value: ",idx)
-            #search the word in the text. Same the start index and the end index:
-            idx = self.view.text_area.search(search_word, idx, nocase=1, stopindex=tk.END)
-            lastidx = '%s+%dc' % (idx, len(search_word))
+                idx = self.search_list[-1]
+                #print("idx value: ",idx)
+            # indx = indx.first element found. lastidx = end word position.
+            idx = self.view.text_area.search(self.search_word, idx, nocase=1, stopindex=tk.END)
+            lastidx = '%s+%dc' % (idx, len(self.search_word))
             
-            print("idx value: ",idx)
-            print("lastidx value: ",lastidx)
-            #Delete others tags.
+            #print("idx value: ",idx)
+            #print("lastidx value: ",lastidx)
+            # Remove any selection before the found word.
             try:
                 self.view.text_area.tag_remove(tk.SEL, 1.0, lastidx)
                 
             except:
                 pass
             
-            # Add the tag to the text between saved index.
+            # If cant find more elements, go to the exception.
             try:
                 # self.view.text_area.focus_set(  )
-                
+                # Add new selection in the new find word.
                 self.view.text_area.tag_add(tk.SEL, idx, lastidx)
+                # Separate the position in row/columns.
                 counter_list = []
                 counter_list = str(idx).split('.')
+                print(counter_list)
+                # add a New mark on the new find word, and put focus on it.
                 self.view.text_area.mark_set("insert", "%d.%d" % (float(int(counter_list[0])), 
                                                                   float(int(counter_list[1]))))
                 self.view.text_area.see(float(int(counter_list[0])))
-                search_list.append(lastidx)
-                
+                # add to the list, 'new index + (leng word)c
+                self.search_list.append(lastidx)
+                print(self.search_list)
             #if dont find more words.
             except:
                 MessageBox.showinfo("Search complete","No further matches")
-                search_list.clear()
+                self.search_list.clear()
                 self.view.text_area.tag_remove(tk.SEL, 1.0,"end-1c")
                 
             
@@ -256,13 +267,13 @@ class ViewModel(object):
             # all_text = map(lambda x: self.model.apply_style(x, 'nn'), all_text)
             # all_text = ''.join(all_text)
             # all_text = all_text.lower()
-            # position = all_text.index(search_word)   
+            # position = all_text.index(self.search_word)   
             
             
             # self.view.text_area.see(position)
             # print(all_text)
             
-            # print(self.search_word.get())
+            # print(self.input_search.get())
             # if self.replace_word.get():
             #     print(self.replace_word.get())
         
