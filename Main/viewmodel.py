@@ -1,4 +1,5 @@
 
+
 import os
 from Main.view import View
 from Main.extraView import ExtraWindow
@@ -6,6 +7,7 @@ from Main.model import Model
 import tkinter as tk 
 from tkinter.filedialog import *
 from datetime import datetime
+from tkinter import messagebox as MessageBox
 
 class ViewModel(object):  
     
@@ -180,9 +182,9 @@ class ViewModel(object):
     # TODO     Pending task    :
     # Search inputs send to (search_word)  and (replace_word)
     # For Search function:
-    #   ▪ Take all text_area text and save it in lowercase.
-    #   ▪ Disable styles too to "nn" style.
-    #   ▪ Make and array with all positions where (search_word) in text_area.
+    #   ▪ Take all text_area text and save it in lowercase.☑
+    #   ▪ Disable styles too to "nn" style.☑
+    #   ▪ Make and all positions where (search_word) in text_area.
     #   ▪ Send back the number or array elements to display it in (quantity_label).
     #   ▪ Select the first position and allow move between with NEXT and BACK buttons.
     
@@ -193,14 +195,77 @@ class ViewModel(object):
     
     #! CLEAN MORE THE CODE specially extraView.
             
-            
+                           
+               
+        
+
             
             
     def search_text(self):
-        #search_word=
-        print(self.search_word.get())
-        if self.replace_word.get():
-            print(self.replace_word.get())
+        search_word = self.search_word.get()
+        search_list = list()
+        
+        if search_word != self.search_word.get():
+            search_list.clear()
+            self.view.text_area.tag_remove(tk.SEL, 1.0,"end-1c")
+            
+        search_word = self.search_word.get()
+        
+        if search_word:
+            # Allows start again after check all words.
+            if search_list == []:
+                idx = "1.0"
+            else:
+                idx = search_list[-1]
+                print("idx value: ",idx)
+            #search the word in the text. Same the start index and the end index:
+            idx = self.view.text_area.search(search_word, idx, nocase=1, stopindex=tk.END)
+            lastidx = '%s+%dc' % (idx, len(search_word))
+            
+            print("idx value: ",idx)
+            print("lastidx value: ",lastidx)
+            #Delete others tags.
+            try:
+                self.view.text_area.tag_remove(tk.SEL, 1.0, lastidx)
+                
+            except:
+                pass
+            
+            # Add the tag to the text between saved index.
+            try:
+                # self.view.text_area.focus_set(  )
+                
+                self.view.text_area.tag_add(tk.SEL, idx, lastidx)
+                counter_list = []
+                counter_list = str(idx).split('.')
+                self.view.text_area.mark_set("insert", "%d.%d" % (float(int(counter_list[0])), 
+                                                                  float(int(counter_list[1]))))
+                self.view.text_area.see(float(int(counter_list[0])))
+                search_list.append(lastidx)
+                
+            #if dont find more words.
+            except:
+                MessageBox.showinfo("Search complete","No further matches")
+                search_list.clear()
+                self.view.text_area.tag_remove(tk.SEL, 1.0,"end-1c")
+                
+            
+            
+            # Take the text as lowercase none style.
+            # all_text = self.view.text_area.get(1.0,tk.END)
+            # all_text = map(lambda x: self.model.apply_style(x, 'nn'), all_text)
+            # all_text = ''.join(all_text)
+            # all_text = all_text.lower()
+            # position = all_text.index(search_word)   
+            
+            
+            # self.view.text_area.see(position)
+            # print(all_text)
+            
+            # print(self.search_word.get())
+            # if self.replace_word.get():
+            #     print(self.replace_word.get())
+        
         
     def show_replace(self):       
         if self.enable_replace.get() == 'true':

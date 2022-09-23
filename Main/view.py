@@ -54,7 +54,11 @@ class View(tk.Tk):
         self.text_area.grid(sticky = tk.N + tk.E + tk.S + tk.W)
         scrollbar.pack(side=RIGHT,fill=tk.Y)
         scrollbar.config(command=self.text_area.yview)
-        self.text_area.config(yscrollcommand=scrollbar.set)
+        self.text_area.config(
+            yscrollcommand=scrollbar.set,
+            selectbackground= "blue",
+            inactiveselectbackground= "blue"
+                              )
         
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1) 

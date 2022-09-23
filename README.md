@@ -298,7 +298,27 @@ Label: `day_mode`, shorcut: *Ctrl+M*, Command: **switch_mode()**
 **def show_about(self):** Show an informative window with a title and message.
 
 ### extraView.py
+
+Render new Windows to extra menu options.
+
+- Initiate `…` ….
+
+**Constructor:**
+- …
+
+**def open_window(self,root_frame):** Create a new tk instance linket to the main window.
+
+**def window_title (self, name:str):** Set a title using *name*.
+
+**def window_icon(self, name:str="Pad"):** Set an icon using the name received. By default Notepad.
+
+**def position(self, root_frame):** Set new window in the middle with default size.
+
+**def search_view(self):** Configure the new window with search options.
+
 ```
+Grid structure esqueme:
+
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓     ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓		
 ┃ Search:                            X ┃     ┃ 0,0                               X ┃
 ┃   ┌─────────────────┐   nº           ┃     ┃     ┌───────────────┐   nº          ┃
@@ -310,8 +330,15 @@ Label: `day_mode`, shorcut: *Ctrl+M*, Command: **switch_mode()**
 ┃   │  Back  │  │  Next  │  │ Accept │ ┃     ┃    │ Back │    │ Next │    │ Acpt │ ┃
 ┃   └────────┘  └────────┘  └────────┘ ┃     ┃    └──────┘    └──────┘    └──────┘ ┃
 ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛     ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
-```
+* Second input is hidden unless "Replace" be checked.
 
+```
+⚠️ ADD ELEMENTS ⚠️
+
+
+**def add_replace_option(self):** Add the replace input.
+
+**def remove_replace_option(self):** Remove the replace input.
 
 
 ### model.py

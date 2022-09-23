@@ -24,12 +24,17 @@ class Model:
         for font in fonts.values():
             if chart in font:
                 new_chart = font.index(chart)
-                
+    
         if new_chart:
             new_chart = fonts[style][new_chart]
-            
+        
+        elif str(new_chart) == '0': # To avoid treat 0 as false, or null.
+            new_chart = fonts[style][0]
+        
         else:
             new_chart = chart
+        
+
         return new_chart
         
         
