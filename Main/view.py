@@ -47,6 +47,7 @@ class View(tk.Tk):
     def set_icon(self):
         self.iconbitmap('Assets/Icons/NotePad_32.ico' )
           
+        # Option to change preferences in a future about color
     def set_text_area(self):
         self.text_area = tk.Text(self)
         scrollbar = tk.Scrollbar(self.text_area)
@@ -56,8 +57,8 @@ class View(tk.Tk):
         scrollbar.config(command=self.text_area.yview)
         self.text_area.config(
             yscrollcommand=scrollbar.set,
-            selectbackground= "blue",
-            inactiveselectbackground= "blue"
+            selectbackground= "#fcba03",
+            inactiveselectbackground= "#bd9833"
                               )
         
         self.grid_rowconfigure(0, weight=1)

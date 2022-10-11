@@ -27,12 +27,13 @@ Use the modules and libraries:
 - [x] Copy, Cut, Paste and Select All functions.
 - [x] Night mode.
 - [x] Apply different text styles .txt.
-- [ ] Search option.
+- [x] Search option.
 - [ ] Replace option.
 - [ ] Minimap.
 - [ ] Index option.
 - [ ] Special titles.
 - [ ] Undo/Redo options.
+- [ ] Calculator option.
 
 
 

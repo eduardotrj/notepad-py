@@ -12,3 +12,7 @@ def start_notepad():
 
 if __name__ == '__main__':
 	start_notepad()
+ 
+ 
+ 
+ 

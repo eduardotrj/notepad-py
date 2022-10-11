@@ -68,8 +68,8 @@ class ExtraWindow():
         search_input = ttk.Entry(master = self.search_frame, textvariable = self.controller.input_search)
         search_input.grid(column=0, row=1, columnspan=2, sticky='ew', padx=10, pady=4)
         # (2,1)
-        quantity_label = ttk.Label(master = self.search_frame, text = "0 found")
-        quantity_label.grid(column=2, row=1, padx=10, pady=4, sticky='w')
+        self.quantity_label = ttk.Label(master = self.search_frame, text = "0 found")
+        self.quantity_label.grid(column=2, row=1, padx=10, pady=4, sticky='w')
         # (2,2)
         replace_check = ttk.Checkbutton(
             master = self.search_frame, 
@@ -81,13 +81,13 @@ class ExtraWindow():
             )
         replace_check.grid(column=2, row=2, padx=10, pady=4, sticky='w')
         # (0,3)
-        back_button = ttk.Button(self.search_frame, text = "Back", style='TButton') #command
+        back_button = ttk.Button(self.search_frame, text = "Back", style='TButton', command = self.controller.last_tag)
         #back_button.config(bg='#f7cd5a')
         back_button.grid(column=0, row=3, padx=10, pady=10, sticky='ws')
         
         
         # (1,3)
-        next_button = ttk.Button(self.search_frame, text = "Next") #command
+        next_button = ttk.Button(self.search_frame, text = "Next", command = self.controller.next_tag)
         next_button.grid(column=1, row=3, padx=10, pady=10, sticky='ws')
         # (2,3)
         accept_button = ttk.Button(self.search_frame, text = "Accept", command = self.controller.search_text) #command
@@ -101,11 +101,14 @@ class ExtraWindow():
         
     def add_replace_option(self):
         # (0,2)
-        self.replace_input = ttk.Entry(master = self.search_frame, textvariable = self.controller.replace_word)
+        self.replace_input = ttk.Entry(master = self.search_frame, textvariable = self.controller.input_replace)
         self.replace_input.grid(column=0, row=2, columnspan=2, sticky='ew', padx=10, pady=4)
         
         
     def remove_replace_option(self):
         self.replace_input.grid_remove()
     
-
+    def updating_results(self):
+        
+        self.quantity_label.config(text = str(self.controller.tag_position+1) + "/" + str(self.controller.total_matches) + " found")
+ 
