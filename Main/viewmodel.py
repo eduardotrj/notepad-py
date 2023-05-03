@@ -26,21 +26,177 @@ class ViewModel(object):
         # self.ex_view = ExtraWindow(self)
         
         
+        
          # SHORTCUTS:
         self.view.bind("<Control-n>", self.new_file)
         self.view.bind("<Control-o>", self.open_file)
         self.view.bind("<Control-s>", self.save_file)
         self.view.bind("<Control-S>", self.save_as)
         
+        self.view.text_area.bind("<Control-Key>", self.control_key_pressed)  #Desactiva ctrl+c, ctrl+v, etc..
         self.view.bind("<Control-m>", self.switch_mode)
         self.view.bind("<Control-plus>", self.zoom_in)
         self.view.bind("<Control-minus>", self.zoom_out)
         self.view.bind("<Control-0>", self.zoom_reset)
+        self.view.bind("<KeyPress>", self.key_pressed)
+        self.view.bind("<KeyRelease>", self.key_released)
+        
+        
+        # self.view.bind("<Control-1>", self.take_text("fb"))
+        # self.view.bind("<Control-2>", self.take_text("fi"))
+        # self.view.bind("<Control-3>", self.take_text("fd"))
+        
+        
+        self.view.text_area.bind("<Control-Alt_R>", self.test123)
+        # When is pressed, check and transform any key pressed. → key_AltGr
+        
 
+        self.view.text_area.bind("<KeyRelease-Return>", self.save_step)
+        
+
+    def test123(self, event):
+        print("Working!")
 
     def run(self):
         self.view.run()
         
+        
+    # Should add more symbols using ALT+GR shorcut.
+    # These symbols are used by me to layout .txt documents.   
+    def key_AltGr(self, event):
+        # Add personal configuration to keyboard:
+        # At the moment many of these symbols are not compatible with Tkinder
+        if event.keysym=='2':
+            self.view.text_area.insert('⚠️')
+        elif event.keysym=='3':
+            self.view.text_area.insert('‼')
+        elif event.keysym=='5':
+            self.view.text_area.insert('✶')
+        elif event.keysym=='6':
+            self.view.text_area.insert('1.0', '●')
+        elif event.keysym=='7':
+            self.view.text_area.insert('░')
+        elif event.keysym=='8':
+            self.view.text_area.insert('▒')
+        elif event.keysym=='9':
+            self.view.text_area.insert('▓')
+        elif event.keysym=='0':
+            self.view.text_area.insert('█')
+        elif event.keysym=='p' or event.keysym=='P':
+            self.view.text_area.insert('←')      
+        elif event.keysym=='[' or event.keysym=='{':
+            self.view.text_area.insert('↑')      
+        elif event.keysym==']' or event.keysym=='}':
+            self.view.text_area.insert('→')      
+        elif event.keysym=="'" or event.keysym=="@":
+            self.view.text_area.insert('↓')      
+        elif event.keysym=='t' or event.keysym=='T':
+            self.view.text_area.insert('■')
+        elif event.keysym=='y' or event.keysym=='Y':
+            self.view.text_area.insert('▪')
+            
+        return 'break'
+        
+    
+    # This is to define the shortcut using CTRL.
+    def control_key_pressed(self,event):
+        
+        #! ⚠️ Not all shorcuts allows being rewriten:
+        # ctrl + t, ctrl + 5, Ctrl + .
+        
+        # if event.keysym=='i' or event.keysym=='I':
+        #     self.take_text("fi")
+        if event.keysym=='r':
+            self.take_text("nn")
+            
+        elif event.keysym=='b' or event.keysym=='2':
+            self.take_text("fb")
+            
+        elif event.keysym=='j' or event.keysym=='3':
+            self.take_text("fi")
+            
+        elif event.keysym=='4':
+            self.take_text("fd")
+            
+        elif event.keysym=='5':
+            self.take_text("td")
+            
+        elif event.keysym=='h' or event.keysym=='6':
+            self.take_text("hn")
+            
+        elif event.keysym=='7':
+            self.take_text("sn")
+            
+        elif event.keysym=='w' or event.keysym=='8':
+            self.take_text("wn")
+            
+        elif event.keysym=='l' or event.keysym=='9':
+            self.take_text("ln")
+            
+        elif event.keysym=='c':
+            self.copy()
+            
+        elif event.keysym=='v':
+            self.paste()
+             
+        elif event.keysym=='a':
+            self.select_all() 
+             
+        elif event.keysym=='x':
+            self.cut()
+             
+        elif event.keysym=='o':
+            self.open_file() 
+             
+        elif event.keysym=='s' and event.keysym=='Shift_L':
+            self.save_as() 
+            
+        elif event.keysym=='s':
+            self.save_file()  
+             
+        elif event.keysym=='.':
+            self.close_app() 
+            
+            
+            
+            
+            
+        elif event.keysym=='n':
+            self.new_file()  
+             
+        elif event.keysym=='plus':
+            self.zoom_in() 
+            
+        elif event.keysym=='minus':
+            self.zoom_out()  
+             
+        elif event.keysym=='0':
+            self.zoom_reset()     
+             
+        elif event.keysym=='f':
+            self.search()     
+             
+        elif event.keysym=='m':
+            self.switch_mode()            
+            
+              
+        return 'break'
+        
+    def key_pressed(self, event):
+        print("esto: ",event.keysym)
+        print(vars(event))
+
+        
+        if event.keysym=='Control-2' and event.state & 4:
+            print("entro")
+            self.take_text("fi")
+        elif event.keysym=='Control-m':
+            self.switch_mode()
+        return "break"
+    
+    def key_released(self, event):
+        print(event.keysym)
+        return "break"
 
 
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ FILE FUNCTIONS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
@@ -82,7 +238,7 @@ class ViewModel(object):
         else:                   # Try to save the file 
             file = open(self.file,"w") 
             file.write(self.view.text_area.get(1.0,tk.END)) 
-            file.close() 
+            file.close()  
             self.view.set_title(os.path.basename(self.file))
             
             
@@ -277,7 +433,7 @@ class ViewModel(object):
         counter_list = []
         counter_list = str(idx).split('.')
         
-        # add a New mark on the new find word, and put focus on it.
+        # add athe pointer entry before the new find word, and put focus on it.
         self.view.text_area.mark_set("insert", "%d.%d" % (float(int(counter_list[0])), 
                                                             float(int(counter_list[1]))))
         self.view.text_area.see(float(int(counter_list[0])))
@@ -314,6 +470,22 @@ class ViewModel(object):
             self.search_view.add_replace_option()
         else:
             self.search_view.remove_replace_option()
+            
+            
+
+    def auto_save(self):
+        pass
+    
+    def save_step(self):
+        # Must be called after press any arrow, enter, backspace or (click and write)
+        # print("The cursor is at: ", entry.index(INSERT))
+        print("hello")
+        pass
+        
+        
+        
+        
+        
         
         
     #* TO ADD UNDO, REDO:

@@ -1,12 +1,54 @@
 
+<div align="center">
+  <h1> NOTEPAD python APP. </h1>
+  <a class="header-badge" target="_blank" href="https://www.linkedin.com/in/eduardo-trujillo-51444a1a9/">
+  <img src="https://img.shields.io/badge/style--5eba00.svg?label=LinkedIn&logo=linkedin&style=social">
+  </a>
+  <a class="header-badge" target="_blank" href="https://twitter.com/Eduardo_Tr_Dev">
+  <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/asabeneh?style=social">
+  </a>
+
+<sub>Author:
+<a href="https://www.linkedin.com/in/eduardo-trujillo-51444a1a9/" target="_blank">Eduardo Trujillo</a><br>
+<small> Version 1.01 </small>
+</sub>
+
+</div>
+
+
+
+![Head Image NotePad](../Assets/ImagesDocument/Title_Image.png)
+
+
+- [NOTEPAD python APP.](#notepad-python-app)
+	- [Description📝:](#description)
+	- [Requirements📚:](#requirements)
+	- [Functions:](#functions)
+	- [Design history 📅:](#design-history-)
+		- [Initial stage:](#initial-stage)
+		- [Final stage:](#final-stage)
+	- [Structure 🏢:](#structure-)
+	- [Files 📂:](#files-)
+		- [main.py](#mainpy)
+		- [viewmodel.py](#viewmodelpy)
+		- [view.py](#viewpy)
+		- [extraView.py](#extraviewpy)
+		- [model.py](#modelpy)
+		- [fonts.py](#fontspy)
+	- [Data Tables 📊:](#data-tables-)
+
 # NOTEPAD python APP.
 
-## Description:
+## Description📝:
 
 Notepad with different functions, which allows writing a text, and applying different styles effects as can bold or italic fonts, keeping the same format and compatibility with other notepads.
 
 
-## Use:
+
+
+
+
+## Requirements📚:
 
 Requires to use:
 - Python 3.10 or latest.
@@ -28,7 +70,7 @@ Use the modules and libraries:
 - [x] Night mode.
 - [x] Apply different text styles .txt.
 - [x] Search option.
-- [ ] Replace option.
+- [x] Replace option.
 - [ ] Minimap.
 - [ ] Index option.
 - [ ] Special titles.
@@ -37,7 +79,7 @@ Use the modules and libraries:
 
 
 
-## Design history:
+## Design history 📅:
 
 ### Initial stage:
 
@@ -108,7 +150,7 @@ After analysing different patterns, the best model to follow was (MVVM) Model-Vi
 Additionally, the code was improved to make it easier to read, and optimize different parts, specially *apply_style* method, which now don not require be edited after add new font styles.
 
 
-## Structure:
+## Structure 🏢:
 
 ```
      ┏━━━━━━━━┓   ←    ┏━━━━━━━━━━━┓   ← →   ┏━━━━━━━━┓
@@ -162,7 +204,7 @@ Model
               └─────────────┤font	*(Dictionary with the different fonts styles)*
 ```
 
-## Files:
+## Files 📂:
 
 ### main.py
 
@@ -302,6 +344,8 @@ Label: `day_mode`, shorcut: *Ctrl+M*, Command: **switch_mode()**
 
 Render new Windows to extra menu options.
 
+![Search Window](../Assets/ImagesDocument/Search_Window.png)
+
 - Initiate `…` ….
 
 **Constructor:**
@@ -353,7 +397,7 @@ Handle the logic side not relationate with the view.
 Dictionary with all different fonts styles saved character by character in a tupla.
 
 
-## Data Tables:
+## Data Tables 📊:
 
 Font style code used:
 ```
