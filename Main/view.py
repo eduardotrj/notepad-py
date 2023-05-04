@@ -7,7 +7,7 @@ from tkinter.filedialog import *
 class View(tk.Tk):
     
     _title = " - Notepad"
-    _default_width = 1050
+    _default_width = 1150
     _default_height = 600
     day_mode = "🌙"
     _zoom = 1.6
@@ -141,6 +141,21 @@ class View(tk.Tk):
     
         edit_menu.add_cascade(label="Style", menu=style_menu)
         edit_menu.add_separator()
+        
+        designs_menu = tk.Menu(edit_menu, tearoff=0)
+        designs_menu.add_command(label="Line -", command=lambda style= 1: self.controller.print_line(style))
+        designs_menu.add_command(label="Line _", command=lambda style= 2: self.controller.print_line(style))
+        designs_menu.add_command(label="Line ■", command=lambda style= 3: self.controller.print_line(style))
+        designs_menu.add_command(label="Line ░", command=lambda style= 4: self.controller.print_line(style))
+        designs_menu.add_command(label="Line ▒", command=lambda style= 5: self.controller.print_line(style))
+        designs_menu.add_command(label="Line ▓", command=lambda style= 6: self.controller.print_line(style))
+        designs_menu.add_command(label="Line █", command=lambda style= 7: self.controller.print_line(style))
+        designs_menu.add_separator()
+        designs_menu.add_command(label="Section", command=lambda style= 1: self.controller.print_title(style))
+        designs_menu.add_command(label="Title", command=lambda style= 2: self.controller.print_title(style))
+        designs_menu.add_command(label="Subtitle", command=lambda style= 3: self.controller.print_title(style))
+        edit_menu.add_cascade(label="Designs", menu=designs_menu)
+        
         edit_menu.add_command(label="Search", command=self.controller.search)
         edit_menu.add_command(label="Date/Time", command=self.controller.print_time)
         self.menu_bar.add_cascade(label="Edit", menu=edit_menu)

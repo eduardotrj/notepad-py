@@ -4,9 +4,9 @@
   <a class="header-badge" target="_blank" href="https://www.linkedin.com/in/eduardo-trujillo-51444a1a9/">
   <img src="https://img.shields.io/badge/style--5eba00.svg?label=LinkedIn&logo=linkedin&style=social">
   </a>
-  <a class="header-badge" target="_blank" href="https://twitter.com/Eduardo_Tr_Dev">
+  <!--<a class="header-badge" target="_blank" href="https://twitter.com/Eduardo_Tr_Dev">
   <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/asabeneh?style=social">
-  </a>
+  </a>-->
 
 <sub>Author:
 <a href="https://www.linkedin.com/in/eduardo-trujillo-51444a1a9/" target="_blank">Eduardo Trujillo</a><br>
@@ -17,7 +17,7 @@
 
 
 
-![Head Image NotePad](../Assets/ImagesDocument/Title_Image.png)
+![Head Image NotePad](https://github.com/eduardotrj/notepad-py/blob/main/Assets/ImagesDocument/Search_Window.png?raw=true)
 
 
 - [NOTEPAD python APP.](#notepad-python-app)
@@ -70,12 +70,17 @@ Use the modules and libraries:
 - [x] Night mode.
 - [x] Apply different text styles .txt.
 - [x] Search option.
+- [ ] Advance Search for multicharacters.
 - [x] Replace option.
-- [ ] Minimap.
+- [x]  Special titles.
+- [ ] Minimap.  **Tkinder counld not allowed**
 - [ ] Index option.
-- [ ] Special titles.
+- [ ] Menu Options.
 - [ ] Undo/Redo options.
 - [ ] Calculator option.
+- [ ] HTML/Markdown conversion.
+- [ ] Tabs.
+  
 
 
 
@@ -177,6 +182,8 @@ ViewModel
 	    │ copy()			*(Call copy system action)*
 	    │ paste()			*(Call paste system action)*
 	    │ select_all()		*(Select all string in text_area)*
+	    │ print_line()		*(Print a line done with determinate characters)*
+	    │ print_title()		*(Allows apply a tittle style to any text)*		
 	    │ print_time()		*(Print de current date and time)*
 	    │ zoom_in()			*(Increase font size)*
 	    │ zoom_out()		*(Decrease font size)*
@@ -344,7 +351,7 @@ Label: `day_mode`, shorcut: *Ctrl+M*, Command: **switch_mode()**
 
 Render new Windows to extra menu options.
 
-![Search Window](../Assets/ImagesDocument/Search_Window.png)
+![Search Window](https://github.com/eduardotrj/notepad-py/blob/main/Assets/ImagesDocument/Search_Window.png?raw=true)
 
 - Initiate `…` ….
 

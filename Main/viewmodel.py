@@ -19,6 +19,8 @@ class ViewModel(object):
     search_list_idx = list()
     total_matches: int = 0
     tag_position: int = 0
+    key_alt_r: bool = False
+    key_control_l: bool = False
     
     def __init__(self) -> None:
         self.model = Model()
@@ -33,13 +35,16 @@ class ViewModel(object):
         self.view.bind("<Control-s>", self.save_file)
         self.view.bind("<Control-S>", self.save_as)
         
-        self.view.text_area.bind("<Control-Key>", self.control_key_pressed)  #Desactiva ctrl+c, ctrl+v, etc..
+        #self.view.text_area.bind("<Control-Key>", self.control_key_pressed)  #Desactiva ctrl+c, ctrl+v, etc..
         self.view.bind("<Control-m>", self.switch_mode)
         self.view.bind("<Control-plus>", self.zoom_in)
         self.view.bind("<Control-minus>", self.zoom_out)
         self.view.bind("<Control-0>", self.zoom_reset)
         self.view.bind("<KeyPress>", self.key_pressed)
         self.view.bind("<KeyRelease>", self.key_released)
+        
+        #self.view.bind("<Alt_R>", self.key_AltGr)
+        
         
         
         # self.view.bind("<Control-1>", self.take_text("fb"))
@@ -60,44 +65,52 @@ class ViewModel(object):
     def run(self):
         self.view.run()
         
-        
+    
+ 
     # Should add more symbols using ALT+GR shorcut.
     # These symbols are used by me to layout .txt documents.   
-    def key_AltGr(self, event):
-        # Add personal configuration to keyboard:
-        # At the moment many of these symbols are not compatible with Tkinder
-        if event.keysym=='2':
-            self.view.text_area.insert('⚠️')
-        elif event.keysym=='3':
-            self.view.text_area.insert('‼')
-        elif event.keysym=='5':
-            self.view.text_area.insert('✶')
-        elif event.keysym=='6':
-            self.view.text_area.insert('1.0', '●')
-        elif event.keysym=='7':
-            self.view.text_area.insert('░')
-        elif event.keysym=='8':
-            self.view.text_area.insert('▒')
-        elif event.keysym=='9':
-            self.view.text_area.insert('▓')
-        elif event.keysym=='0':
-            self.view.text_area.insert('█')
-        elif event.keysym=='p' or event.keysym=='P':
-            self.view.text_area.insert('←')      
-        elif event.keysym=='[' or event.keysym=='{':
-            self.view.text_area.insert('↑')      
-        elif event.keysym==']' or event.keysym=='}':
-            self.view.text_area.insert('→')      
-        elif event.keysym=="'" or event.keysym=="@":
-            self.view.text_area.insert('↓')      
-        elif event.keysym=='t' or event.keysym=='T':
-            self.view.text_area.insert('■')
-        elif event.keysym=='y' or event.keysym=='Y':
-            self.view.text_area.insert('▪')
-            
-        return 'break'
+    # def key_AltGr(self, event):
+    #     # Add personal configuration to keyboard:
+    #     # At the moment many of these symbols are not compatible with Tkinder
         
-    
+    #     print("LETS GO")
+    #     pointer = self.view.text_area.index(tk.INSERT)
+    #     symbol = ''
+    #     if event.keysym=='2':
+    #         symbol ='⚠️'
+    #     elif event.keysym=='3':
+    #         symbol ='‼'
+    #     elif event.keysym=='5':
+    #         symbol ='✶'
+    #         print(symbol)
+    #     elif event.keysym=='6':
+    #         symbol ='●'
+    #     elif event.keysym=='7':
+    #         symbol ='░'
+    #     elif event.keysym=='8':
+    #         symbol ='▒'
+    #     elif event.keysym=='9':
+    #         symbol ='▓'
+    #     elif event.keysym=='0':
+    #         symbol ='█'
+    #     elif event.keysym=='p' or event.keysym=='P':
+    #         symbol ='←'      
+    #     elif event.keysym=='[' or event.keysym=='{':
+    #         symbol ='↑'      
+    #     elif event.keysym==']' or event.keysym=='}':
+    #         symbol ='→'      
+    #     elif event.keysym=="'" or event.keysym=="@":
+    #         symbol ='↓'      
+    #     elif event.keysym=='t' or event.keysym=='T':
+    #         symbol ='■'
+    #     elif event.keysym=='y' or event.keysym=='Y':
+    #         symbol ='▪'
+            
+    #     self.view.text_area.insert(pointer, symbol)
+            
+    #     return 'break'
+        
+    #? Not in use.
     # This is to define the shortcut using CTRL.
     def control_key_pressed(self,event):
         
@@ -155,11 +168,7 @@ class ViewModel(object):
             self.save_file()  
              
         elif event.keysym=='.':
-            self.close_app() 
-            
-            
-            
-            
+            self.close_app()      
             
         elif event.keysym=='n':
             self.new_file()  
@@ -177,25 +186,141 @@ class ViewModel(object):
             self.search()     
              
         elif event.keysym=='m':
-            self.switch_mode()            
-            
-              
+            self.switch_mode()
+                        
         return 'break'
         
+        
+    # To get information about keys    
     def key_pressed(self, event):
+        
+        if event.keysym=='Alt_R':
+            self.key_alt_r = True
+            
+        if event.keysym=='Control_L':
+            self.key_control_l = True
+            
+        if self.key_alt_r:
+            pointer = self.view.text_area.index(tk.INSERT)
+            symbol = ''
+            if event.keysym=='2':
+                symbol ='⚠️'
+            elif event.keysym=='3':
+                symbol ='‼'
+            elif event.keysym=='5':
+                symbol ='✶'
+            elif event.keysym=='6':
+                symbol ='●'
+            elif event.keysym=='7':
+                symbol ='░'
+            elif event.keysym=='8':
+                symbol ='▒'
+            elif event.keysym=='9':
+                symbol ='▓'
+            elif event.keysym=='0'or event.keysym=='slash':
+                symbol ='█'
+            elif event.keysym=='p' or event.keysym=='P':
+                symbol ='←'     
+            elif event.keysym=='bracketleft' or event.keysym=='braceleft':
+                symbol ='↑'      
+            elif event.keysym=='bracketright' or event.keysym=='braceright':
+                symbol ='→'      
+            elif event.keysym=="apostrophe" or event.keysym=="at":
+                symbol ='↓'      
+            elif event.keysym=='t' or event.keysym=='T':
+                symbol ='■'
+            elif event.keysym=='y' or event.keysym=='Y':
+                symbol ='▪'
+                
+            self.view.text_area.insert(pointer, symbol)
+            
+        elif self.key_control_l:
+            if event.keysym=='r':
+                self.take_text("nn")
+            
+            elif event.keysym=='b' or event.keysym=='2':
+                self.take_text("fb")
+                
+            elif event.keysym=='j' or event.keysym=='3':
+                self.take_text("fi")
+                
+            elif event.keysym=='4':
+                self.take_text("fd")
+                
+            elif event.keysym=='5':
+                self.take_text("td")
+                
+            elif event.keysym=='h' or event.keysym=='6':
+                self.take_text("hn")
+                
+            elif event.keysym=='7':
+                self.take_text("sn")
+                
+            elif event.keysym=='w' or event.keysym=='8':
+                self.take_text("wn")
+                
+            elif event.keysym=='l' or event.keysym=='9':
+                self.take_text("ln")
+                
+            elif event.keysym=='c':
+                self.copy()
+                
+            elif event.keysym=='v':
+                self.paste()
+                
+            elif event.keysym=='a':
+                self.select_all() 
+                
+            elif event.keysym=='x':
+                self.cut()
+                
+            elif event.keysym=='o':
+                self.open_file() 
+                
+            elif event.keysym=='s' and event.keysym=='Shift_L':
+                self.save_as() 
+                
+            elif event.keysym=='s':
+                self.save_file()  
+                
+            elif event.keysym=='.':
+                self.close_app()      
+                
+            elif event.keysym=='n':
+                self.new_file()  
+                
+            elif event.keysym=='plus' or event.keysym=='equal':
+                self.zoom_in() 
+                
+            elif event.keysym=='minus':
+                self.zoom_out()  
+                
+            elif event.keysym=='0':
+                self.zoom_reset()     
+                
+            elif event.keysym=='f':
+                self.search()     
+                
+            elif event.keysym=='m':
+                self.switch_mode()
+                            
+            
         print("esto: ",event.keysym)
         print(vars(event))
-
         
-        if event.keysym=='Control-2' and event.state & 4:
-            print("entro")
-            self.take_text("fi")
-        elif event.keysym=='Control-m':
-            self.switch_mode()
+        # if event.keysym=='Control-2' and event.state & 4:
+        #     print("entro")
+        #     self.take_text("fi")
+        # elif event.keysym=='Control-m':
+        #     self.switch_mode()
         return "break"
     
     def key_released(self, event):
-        print(event.keysym)
+        if event.keysym=='Alt_R':
+            self.key_alt_r = False
+        if event.keysym=='Control_L':
+            self.key_control_l = False
+        # print(event.keysym)
         return "break"
 
 
@@ -283,6 +408,76 @@ class ViewModel(object):
             print(new_text)
             self.view.text_area.insert(position,new_text)       
     
+    # Apply lines styles.
+    def print_line(self, style:int=0):
+        
+        pointer = self.view.text_area.index(tk.INSERT)
+        print(style)
+        line = ""
+        if style == 1:
+            line = "---------------------------------------------------------------------------------------------------------------"
+        elif style == 2:
+            line = "_______________________________________________________________________________________________________________"
+        elif style == 3:
+            line = "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"
+        elif style == 4:
+            line = "░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░"
+        elif style == 5:
+            line = "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒"
+        elif style == 6:
+            line = "▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓"
+        elif style == 7:
+            line = "███████████████████████████████████████████████████████████████████████████████████████████████████████████████"
+        
+        self.view.text_area.insert(pointer,line) 
+        
+    # Apply title styles.    
+    def print_title(self, style:str=0):
+        if self.view.text_area.selection_get():
+        
+            print("the style taken: ",style)
+            self.select_text = self.view.text_area.selection_get()
+            self.select_text = [*self.select_text]
+  
+            line, column = map(int, self.view.text_area.index('sel.first').split('.'))
+            position = (str(line) + "." + str(0))
+            self.view.text_area.delete('sel.first','sel.last')
+            
+            if style == 1:
+                #115 = ░░░ + '  ' + TEXTO + '  ' + ░░░
+                
+                long_text = len(self.select_text) + 4
+                new_text = ''.join(self.select_text)
+                fill_char = 111 - long_text
+                fill_char = fill_char//2
+                part1 = "░" * fill_char
+                print(fill_char)
+                fill_char = 111 - (long_text + fill_char)
+                part2 = "░" * fill_char
+                print(fill_char)
+                new_text = f"""▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+{part1}  {new_text}  {part2}
+▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"""
+
+                
+            elif style == 2:
+                new_character_list = map(lambda x: self.model.apply_style(x, "fb"), self.select_text)
+                new_text = ''.join(new_character_list)
+                new_text = '■ ' + new_text
+            elif style == 3:
+                new_character_list = map(lambda x: self.model.apply_style(x, "fd"), self.select_text)
+                new_text = ''.join(new_character_list)
+                new_text = '	▪ ' + new_text
+            
+            
+            print(new_text)
+            
+            
+            self.view.text_area.insert(position,new_text)
+        
+        
+
+            
         
     def print_time(self):       # 00:44 08/09/2022  date/time
         time = datetime.now()
