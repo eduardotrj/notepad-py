@@ -70,13 +70,13 @@ Use the modules and libraries:
 - [x] Night mode.
 - [x] Apply different text styles .txt.
 - [x] Search option.
-- [ ] Advance Search for multicharacters.
 - [x] Replace option.
-- [x]  Special titles.
+- [x] Special titles.
+- [x] Undo/Redo options.
+- [ ] Advance Search for multicharacters.
 - [ ] Minimap.  **Tkinder counld not allowed**
 - [ ] Index option.
 - [ ] Menu Options.
-- [ ] Undo/Redo options.
 - [ ] Calculator option.
 - [ ] HTML/Markdown conversion.
 - [ ] Tabs.
