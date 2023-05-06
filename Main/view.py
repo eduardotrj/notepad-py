@@ -58,7 +58,10 @@ class View(tk.Tk):
         self.text_area.config(
             yscrollcommand=scrollbar.set,
             selectbackground= "#fcba03",
-            inactiveselectbackground= "#bd9833"
+            inactiveselectbackground= "#bd9833",
+            undo= True,
+            autoseparators=True,
+            #maxundo=-1
                               )
         
         self.grid_rowconfigure(0, weight=1)

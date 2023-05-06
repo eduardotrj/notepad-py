@@ -46,12 +46,6 @@ class ViewModel(object):
         #self.view.bind("<Alt_R>", self.key_AltGr)
         
         
-        
-        # self.view.bind("<Control-1>", self.take_text("fb"))
-        # self.view.bind("<Control-2>", self.take_text("fi"))
-        # self.view.bind("<Control-3>", self.take_text("fd"))
-        
-        
         self.view.text_area.bind("<Control-Alt_R>", self.test123)
         # When is pressed, check and transform any key pressed. → key_AltGr
         
@@ -488,6 +482,7 @@ class ViewModel(object):
     
     def search(self):
         # Check if use too memory by creating new instances.
+        # Must be limited the number of window to one: If is open...
         self.enable_replace = tk.StringVar()
         self.input_search = tk.StringVar()
         self.input_replace = tk.StringVar()    
@@ -669,7 +664,10 @@ class ViewModel(object):
             
 
     def auto_save(self):
+        # It should save the document as temporal file each x minutes.
         pass
+    
+    
     
     def save_step(self):
         # Must be called after press any arrow, enter, backspace or (click and write)
