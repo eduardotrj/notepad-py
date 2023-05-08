@@ -335,7 +335,7 @@ class ViewModel(object):
         else:                   # Try to open the file
             self.view.set_title(os.path.basename(self.file)) 
             self.view.text_area.delete(1.0,tk.END) 
-            file = open(self.file,"r") 
+            file = open(self.file,"r", encoding="utf-8") 
             self.view.text_area.insert(1.0,file.read()) 
             file.close()
             
@@ -344,7 +344,7 @@ class ViewModel(object):
         if self.file == None:   # Save as new file 
             self.save_as()        
         else:                   # Choose an existing file
-            file = open(self.file,"w") 
+            file = open(self.file,"w", encoding="utf-8") 
             file.write(self.view.text_area.get(1.0,tk.END)) 
             file.close() 
             
@@ -355,7 +355,7 @@ class ViewModel(object):
         if self.file == "": 
             self.file = None
         else:                   # Try to save the file 
-            file = open(self.file,"w") 
+            file = open(self.file,"w", encoding="utf-8") 
             file.write(self.view.text_area.get(1.0,tk.END)) 
             file.close()  
             self.view.set_title(os.path.basename(self.file))
