@@ -38,6 +38,9 @@ class Model:
         return new_chart
         
         
+    # def save_conf():
+    # pass
+        
 
         
         

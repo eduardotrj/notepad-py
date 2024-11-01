@@ -7,10 +7,10 @@ from tkinter.filedialog import *
 class View(tk.Tk):
     
     _title = " - Notepad"
-    _default_width = 1150
-    _default_height = 600
+    _default_width = 1800       #1150
+    _default_height = 1000       #600
     day_mode = "🌙"
-    _zoom = 1.6
+    _zoom = 2.6     #1.6 Normal,  2.6 perfect for HD full screen.
     default_size = 9
     n_font =  default_size
     font_list = (1,2,3,4,5,6,7,8,9,11,13,14,15,16,17,18,19,20,21,22,24,26,28,30,33,36,39,43,48,54,60,72,84)
@@ -121,22 +121,22 @@ class View(tk.Tk):
         edit_menu.add_separator()
         
         style_menu = tk.Menu(edit_menu, tearoff=0)
-        style_menu.add_command(label="Bold", accelerator="Ctrl+B/Ctrl+2", command=lambda style= "fb": self.controller.take_text(style))
-        style_menu.add_command(label="Italic", accelerator="Ctrl+J/Ctrl+3", command=lambda style= "fi": self.controller.take_text(style))
-        style_menu.add_command(label="Italic Bold", accelerator="Ctrl+4", command=lambda style= "fd": self.controller.take_text(style))
+        style_menu.add_command(label="Bold", accelerator="Ctrl+B", command=lambda style= "fb": self.controller.take_text(style))
+        style_menu.add_command(label="Italic", accelerator="Ctrl+J", command=lambda style= "fi": self.controller.take_text(style))
+        style_menu.add_command(label="Italic Bold", command=lambda style= "fd": self.controller.take_text(style))
 
         style_menu.add_command(label="Script", accelerator="", command=lambda style= "tn": self.controller.take_text(style))
         style_menu.add_command(label="Script Bold", command=lambda style= "tb": self.controller.take_text(style))
         style_menu.add_command(label="Gothic", command=lambda style= "gn": self.controller.take_text(style))
         style_menu.add_command(label="Gothic Bold", command=lambda style= "gb": self.controller.take_text(style))
-        style_menu.add_command(label="Highlighted", accelerator="Ctrl+H/Ctrl+6", command=lambda style= "hn": self.controller.take_text(style))
-        style_menu.add_command(label="Sans", accelerator="Ctrl+7", command=lambda style= "sn": self.controller.take_text(style))
+        style_menu.add_command(label="Highlighted", accelerator="Ctrl+H", command=lambda style= "hn": self.controller.take_text(style))
+        style_menu.add_command(label="Sans", command=lambda style= "sn": self.controller.take_text(style))
         style_menu.add_command(label="Sans Italic", command=lambda style= "si": self.controller.take_text(style))
         style_menu.add_command(label="Sans Bold", command=lambda style= "sb": self.controller.take_text(style))
         style_menu.add_command(label="Sans Italic Bold", command=lambda style= "sd": self.controller.take_text(style))
-        style_menu.add_command(label="Typewriter", accelerator="Ctrl+W/Ctrl+8", command=lambda style= "wn": self.controller.take_text(style))
+        style_menu.add_command(label="Typewriter", accelerator="Ctrl+W", command=lambda style= "wn": self.controller.take_text(style))
         style_menu.add_command(label="Bubble", command=lambda style= "bn": self.controller.take_text(style))
-        style_menu.add_command(label="Fullwidth", accelerator="Ctrl+L/Ctrl+9", command=lambda style= "ln": self.controller.take_text(style))
+        style_menu.add_command(label="Fullwidth", accelerator="Ctrl+L", command=lambda style= "ln": self.controller.take_text(style))
         style_menu.add_command(label="Super Index", command=lambda style= "mn": self.controller.take_text(style))
 
 
@@ -154,12 +154,18 @@ class View(tk.Tk):
         designs_menu.add_command(label="Line ▓", command=lambda style= 6: self.controller.print_line(style))
         designs_menu.add_command(label="Line █", command=lambda style= 7: self.controller.print_line(style))
         designs_menu.add_separator()
-        designs_menu.add_command(label="Section", command=lambda style= 1: self.controller.print_title(style))
-        designs_menu.add_command(label="Title", command=lambda style= 2: self.controller.print_title(style))
-        designs_menu.add_command(label="Subtitle", command=lambda style= 3: self.controller.print_title(style))
+        designs_menu.add_command(label="Section", accelerator="Ctrl+1",  command=lambda style= 1: self.controller.print_title(style))
+        designs_menu.add_command(label="Title", accelerator="Ctrl+2", command=lambda style= 2: self.controller.print_title(style))
+        designs_menu.add_command(label="Subtitle", accelerator="Ctrl+3", command=lambda style= 3: self.controller.print_title(style))
+        designs_menu.add_command(label="3º Title", accelerator="Ctrl+4", command=lambda style= 4: self.controller.print_title(style))     
+        designs_menu.add_command(label="1º List", accelerator="Ctrl+5", command=lambda style= 5: self.controller.print_title(style))
+        designs_menu.add_command(label="2º List", accelerator="Ctrl+6", command=lambda style= 6: self.controller.print_title(style))
+        designs_menu.add_command(label="3º List", accelerator="Ctrl+7", command=lambda style= 7: self.controller.print_title(style))
+        designs_menu.add_command(label="Reset title", accelerator="Ctrl+8",  command=lambda style= 8: self.controller.print_title(style))   
+        # 5, 6, 7 style are for sans style with ●, •, ·.
         edit_menu.add_cascade(label="Designs", menu=designs_menu)
         
-        edit_menu.add_command(label="Search", command=self.controller.search)
+        edit_menu.add_command(label="Search", command=self.controller.search)   # ! .open_search
         edit_menu.add_command(label="Date/Time", command=self.controller.print_time)
         self.menu_bar.add_cascade(label="Edit", menu=edit_menu)
         
@@ -186,3 +192,9 @@ class View(tk.Tk):
 
     def show_about(self): 
         showinfo("Notepad","Developed by Eduardo Trujillo in Python")         
+        
+    #add configuration:
+    # Change size window by default
+    # Change text size by default
+    # Color background, color selection.
+    # Change font????

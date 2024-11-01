@@ -73,13 +73,16 @@ Use the modules and libraries:
 - [x] Replace option.
 - [x] Special titles.
 - [x] Undo/Redo options.
-- [ ] Advance Search for multicharacters.
+- [x] Advance Search for multicharacters.
 - [ ] Minimap.  **Tkinder counld not allowed**
+- [ ] Right click menu.
 - [ ] Index option.
 - [ ] Menu Options.
 - [ ] Calculator option.
 - [ ] HTML/Markdown conversion.
 - [ ] Tabs.
+- [ ] Tables creator.
+- [ ] Color text.
   
 
 

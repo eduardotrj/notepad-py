@@ -3,11 +3,15 @@
 import os
 from Main.view import View
 from Main.extraView import ExtraWindow
+from Main.auxMenu import Aux_menu
 from Main.model import Model
+from Main.calculate import Calculation
+# from Main.searchMenu import SearchMenu
 import tkinter as tk 
 from tkinter.filedialog import *
 from datetime import datetime
 from tkinter import messagebox as MessageBox
+
 
 class ViewModel(object):  
     
@@ -24,7 +28,10 @@ class ViewModel(object):
     
     def __init__(self) -> None:
         self.model = Model()
+        self.calc = Calculation()
         self.view = View(self)
+        # self.aux_menu = Aux_menu(self)
+        
         # self.ex_view = ExtraWindow(self)
         
         
@@ -43,6 +50,8 @@ class ViewModel(object):
         self.view.bind("<KeyPress>", self.key_pressed)
         self.view.bind("<KeyRelease>", self.key_released)
         
+        self.view.bind("<Button-3>", self.callAux) 
+        
         #self.view.bind("<Alt_R>", self.key_AltGr)
         
         
@@ -59,131 +68,43 @@ class ViewModel(object):
     def run(self):
         self.view.run()
         
+    def callAux(self, event):
+        self.search_view = Aux_menu(self)
+        
+        try:
+            self.search_view.popup_menu.tk_popup(event.x_root, event.y_root, 0)
+        finally:
+            self.search_view.popup_menu.grab_release()
+        
+    def calculate(self):
+        if self.view.text_area.selection_get():
+            
+            
+            self.select_text = self.view.text_area.selection_get()
+            # self.select_text = [*self.select_text]
+            self.calc.calculate(self.select_text)
+            
+            # print("the style taken: ",self.select_text)
+            
+            
+            line, column = map(int, self.view.text_area.index('sel.first').split('.'))
+            position = (str(line) + "." + str(column))
+            self.view.text_area.delete('sel.first','sel.last')
+            
+            # # new_character_list = map(lambda x: self.model.apply_style(x, style), self.select_text)
+            # #print(list(new_character_list))    #! LEAVE TO CHECK ERROrs
+            # new_text = ''.join(new_character_list)
+            # print(new_text)
+            # self.view.text_area.insert(position,new_text) 
+       
+        
+    # def open_search(self):
+    #     self.searchMenu = SearchMenu(self)
+    #     self.searchMenu.search()
+        
+        #self.model.apply_style(x, "fb"), self.select_text)
     
- 
-    # Should add more symbols using ALT+GR shorcut.
-    # These symbols are used by me to layout .txt documents.   
-    # def key_AltGr(self, event):
-    #     # Add personal configuration to keyboard:
-    #     # At the moment many of these symbols are not compatible with Tkinder
-        
-    #     print("LETS GO")
-    #     pointer = self.view.text_area.index(tk.INSERT)
-    #     symbol = ''
-    #     if event.keysym=='2':
-    #         symbol ='⚠️'
-    #     elif event.keysym=='3':
-    #         symbol ='‼'
-    #     elif event.keysym=='5':
-    #         symbol ='✶'
-    #         print(symbol)
-    #     elif event.keysym=='6':
-    #         symbol ='●'
-    #     elif event.keysym=='7':
-    #         symbol ='░'
-    #     elif event.keysym=='8':
-    #         symbol ='▒'
-    #     elif event.keysym=='9':
-    #         symbol ='▓'
-    #     elif event.keysym=='0':
-    #         symbol ='█'
-    #     elif event.keysym=='p' or event.keysym=='P':
-    #         symbol ='←'      
-    #     elif event.keysym=='[' or event.keysym=='{':
-    #         symbol ='↑'      
-    #     elif event.keysym==']' or event.keysym=='}':
-    #         symbol ='→'      
-    #     elif event.keysym=="'" or event.keysym=="@":
-    #         symbol ='↓'      
-    #     elif event.keysym=='t' or event.keysym=='T':
-    #         symbol ='■'
-    #     elif event.keysym=='y' or event.keysym=='Y':
-    #         symbol ='▪'
-            
-    #     self.view.text_area.insert(pointer, symbol)
-            
-    #     return 'break'
-        
-    #? Not in use.
-    # This is to define the shortcut using CTRL.
-    def control_key_pressed(self,event):
-        
-        #! ⚠️ Not all shorcuts allows being rewriten:
-        # ctrl + t, ctrl + 5, Ctrl + .
-        
-        # if event.keysym=='i' or event.keysym=='I':
-        #     self.take_text("fi")
-        if event.keysym=='r':
-            self.take_text("nn")
-            
-        elif event.keysym=='b' or event.keysym=='2':
-            self.take_text("fb")
-            
-        elif event.keysym=='j' or event.keysym=='3':
-            self.take_text("fi")
-            
-        elif event.keysym=='4':
-            self.take_text("fd")
-            
-        elif event.keysym=='5':
-            self.take_text("td")
-            
-        elif event.keysym=='h' or event.keysym=='6':
-            self.take_text("hn")
-            
-        elif event.keysym=='7':
-            self.take_text("sn")
-            
-        elif event.keysym=='w' or event.keysym=='8':
-            self.take_text("wn")
-            
-        elif event.keysym=='l' or event.keysym=='9':
-            self.take_text("ln")
-            
-        elif event.keysym=='c':
-            self.copy()
-            
-        elif event.keysym=='v':
-            self.paste()
-             
-        elif event.keysym=='a':
-            self.select_all() 
-             
-        elif event.keysym=='x':
-            self.cut()
-             
-        elif event.keysym=='o':
-            self.open_file() 
-             
-        elif event.keysym=='s' and event.keysym=='Shift_L':
-            self.save_as() 
-            
-        elif event.keysym=='s':
-            self.save_file()  
-             
-        elif event.keysym=='.':
-            self.close_app()      
-            
-        elif event.keysym=='n':
-            self.new_file()  
-             
-        elif event.keysym=='plus':
-            self.zoom_in() 
-            
-        elif event.keysym=='minus':
-            self.zoom_out()  
-             
-        elif event.keysym=='0':
-            self.zoom_reset()     
-             
-        elif event.keysym=='f':
-            self.search()     
-             
-        elif event.keysym=='m':
-            self.switch_mode()
-                        
-        return 'break'
-        
+
         
     # To get information about keys    
     def key_pressed(self, event):
@@ -232,41 +153,22 @@ class ViewModel(object):
             if event.keysym=='r':
                 self.take_text("nn")
             
-            elif event.keysym=='b' or event.keysym=='2':
+            elif event.keysym=='b':
                 self.take_text("fb")
                 
-            elif event.keysym=='j' or event.keysym=='3':
+            elif event.keysym=='j':
                 self.take_text("fi")
                 
-            elif event.keysym=='4':
-                self.take_text("fd")
-                
-            elif event.keysym=='5':
-                self.take_text("td")
-                
-            elif event.keysym=='h' or event.keysym=='6':
+            elif event.keysym=='h':
                 self.take_text("hn")
+
                 
-            elif event.keysym=='7':
-                self.take_text("sn")
-                
-            elif event.keysym=='w' or event.keysym=='8':
+            elif event.keysym=='w':
                 self.take_text("wn")
                 
-            elif event.keysym=='l' or event.keysym=='9':
+            elif event.keysym=='l':
                 self.take_text("ln")
                 
-            elif event.keysym=='c':
-                self.copy()
-                
-            elif event.keysym=='v':
-                self.paste()
-                
-            elif event.keysym=='a':
-                self.select_all() 
-                
-            elif event.keysym=='x':
-                self.cut()
                 
             elif event.keysym=='o':
                 self.open_file() 
@@ -293,20 +195,37 @@ class ViewModel(object):
                 self.zoom_reset()     
                 
             elif event.keysym=='f':
-                self.search()     
+                self.search()   
+                # self.open_search()      
                 
             elif event.keysym=='m':
                 self.switch_mode()
-                            
             
-        print("esto: ",event.keysym)
-        print(vars(event))
-        
-        # if event.keysym=='Control-2' and event.state & 4:
-        #     print("entro")
-        #     self.take_text("fi")
-        # elif event.keysym=='Control-m':
-        #     self.switch_mode()
+            
+            elif event.keysym=='1':
+                self.print_title(1)
+                
+            elif event.keysym=='2':
+                self.print_title(2)
+                
+            elif event.keysym=='3':
+                self.print_title(3)
+                
+            elif event.keysym=='4':
+                self.print_title(4)
+                
+            elif event.keysym=='5':
+                self.print_title(5)
+                
+            elif event.keysym=='6':
+                self.print_title(6)
+                
+            elif event.keysym=='7':
+                self.print_title(7)
+                
+            elif event.keysym=='8':
+                self.print_title(8)
+                            
         return "break"
     
     def key_released(self, event):
@@ -339,6 +258,12 @@ class ViewModel(object):
             self.view.text_area.insert(1.0,file.read()) 
             file.close()
             
+            
+    def open_recents(self, event=1): 
+        # It show a list with the last 5 files opened
+        # They are save in a file as a list[5]. 
+        # IF this file in list ? move to first position : add to first postion, delete last.
+        pass
             
     def save_file(self, event=1): 
         if self.file == None:   # Save as new file 
@@ -383,12 +308,19 @@ class ViewModel(object):
     def select_all(self, event=1):
         self.view.text_area.tag_add('sel', '1.0', 'end')    
         
+    def delete(self):
+        if self.view.text_area.selection_get():
+            
+            line, column = map(int, self.view.text_area.index('sel.first').split('.'))
+            position = (str(line) + "." + str(column))
+            self.view.text_area.delete('sel.first','sel.last')
+        
     
     # It's sent a data with the code style.
     def take_text(self, style:str="nn" ):
         if self.view.text_area.selection_get():
             
-            print("the style taken: ",style)
+            # print("the style taken: ",style)
             self.select_text = self.view.text_area.selection_get()
             self.select_text = [*self.select_text]
   
@@ -399,14 +331,14 @@ class ViewModel(object):
             new_character_list = map(lambda x: self.model.apply_style(x, style), self.select_text)
             #print(list(new_character_list))    #! LEAVE TO CHECK ERROrs
             new_text = ''.join(new_character_list)
-            print(new_text)
+            # print(new_text)
             self.view.text_area.insert(position,new_text)       
     
     # Apply lines styles.
     def print_line(self, style:int=0):
         
         pointer = self.view.text_area.index(tk.INSERT)
-        print(style)
+        # print(style)
         line = ""
         if style == 1:
             line = "---------------------------------------------------------------------------------------------------------------"
@@ -427,9 +359,15 @@ class ViewModel(object):
         
     # Apply title styles.    
     def print_title(self, style:str=0):
+        
+        
+        # CHECK IF HAVE A BREAK LINE, IF HAVE, APPLY 1 TIME EFFECT FOR EACH LINE
+        # ADD THE EFFECTS IN OTHER FUNTION AT SIDE.
+        # THINK ABOUT MAKE EXTERNAL ALL STYLES FUNTION.
+        
         if self.view.text_area.selection_get():
         
-            print("the style taken: ",style)
+           # print("the style taken: ",style)
             self.select_text = self.view.text_area.selection_get()
             self.select_text = [*self.select_text]
   
@@ -442,13 +380,14 @@ class ViewModel(object):
                 
                 long_text = len(self.select_text) + 4
                 new_text = ''.join(self.select_text)
+                new_text = new_text.title()
                 fill_char = 111 - long_text
                 fill_char = fill_char//2
                 part1 = "░" * fill_char
-                print(fill_char)
+                # print(fill_char)
                 fill_char = 111 - (long_text + fill_char)
                 part2 = "░" * fill_char
-                print(fill_char)
+                # print(fill_char)
                 new_text = f"""▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 {part1}  {new_text}  {part2}
 ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"""
@@ -457,14 +396,44 @@ class ViewModel(object):
             elif style == 2:
                 new_character_list = map(lambda x: self.model.apply_style(x, "fb"), self.select_text)
                 new_text = ''.join(new_character_list)
+                new_text = new_text.title()
                 new_text = '■ ' + new_text
             elif style == 3:
                 new_character_list = map(lambda x: self.model.apply_style(x, "fd"), self.select_text)
                 new_text = ''.join(new_character_list)
+                new_text = new_text.capitalize()
                 new_text = '	▪ ' + new_text
+            elif style == 4:
+                new_character_list = map(lambda x: self.model.apply_style(x, "fi"), self.select_text)
+                new_text = ''.join(new_character_list)
+                new_text = new_text.capitalize()
+                new_text = '		· ' + new_text     
+                
+            elif style == 5:
+                new_character_list = map(lambda x: self.model.apply_style(x, "sb"), self.select_text)
+                new_text = ''.join(new_character_list)
+                new_text = new_text.capitalize()
+                new_text = '	● ' + new_text
+            elif style == 6:
+                new_character_list = map(lambda x: self.model.apply_style(x, "sd"), self.select_text)
+                new_text = ''.join(new_character_list)
+                new_text = new_text.capitalize()
+                new_text = '		• ' + new_text
+            elif style == 7:
+                new_character_list = map(lambda x: self.model.apply_style(x, "si"), self.select_text)
+                new_text = ''.join(new_character_list)
+                new_text = new_text.capitalize()
+                new_text = '			· ' + new_text        
             
+            elif style == 8: #(Delete style)
+                new_character_list = map(lambda x: self.model.apply_style(x, "nn"), self.select_text)
+                new_text = ''.join(new_character_list)
+                new_text = new_text.translate({ord(i): None for i in '■▪●•·▄▀░'})
+                new_text = new_text.strip()
+                new_text = new_text.lower()
+    
             
-            print(new_text)
+            # print(new_text)
             
             
             self.view.text_area.insert(position,new_text)
@@ -487,6 +456,9 @@ class ViewModel(object):
         self.input_search = tk.StringVar()
         self.input_replace = tk.StringVar()    
         self.search_view = ExtraWindow(self, "Search")
+        
+        
+        
         
     
             
@@ -515,7 +487,7 @@ class ViewModel(object):
     
     def switch_mode(self, event=1):     
         if self.view.day_mode == "🌙" :
-            self.view.text_area.configure(bg="black", fg="white")
+            self.view.text_area.configure(bg="#2A2F2D", fg="white")
             self.view.day_mode = "🌞"
             self.view.menu_bar.entryconfig(5, label = "🌞")  
                   
@@ -599,7 +571,7 @@ class ViewModel(object):
             else:
                 #! NEED TO AVOID CLOSE WINDOW
                 MessageBox.showinfo("Search complete","No matches")
-                print("0 MATCHES")
+                # print("0 MATCHES")
         
         
     def select_tag(self):
@@ -672,7 +644,6 @@ class ViewModel(object):
     def save_step(self):
         # Must be called after press any arrow, enter, backspace or (click and write)
         # print("The cursor is at: ", entry.index(INSERT))
-        print("hello")
         pass
         
         

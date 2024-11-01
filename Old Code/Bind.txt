@@ -1,0 +1,159 @@
+ 
+    # Should add more symbols using ALT+GR shorcut.
+    # These symbols are used by me to layout .txt documents.   
+    # def key_AltGr(self, event):
+    #     # Add personal configuration to keyboard:
+    #     # At the moment many of these symbols are not compatible with Tkinder
+        
+    #     print("LETS GO")
+    #     pointer = self.view.text_area.index(tk.INSERT)
+    #     symbol = ''
+    #     if event.keysym=='2':
+    #         symbol ='⚠️'
+    #     elif event.keysym=='3':
+    #         symbol ='‼'
+    #     elif event.keysym=='5':
+    #         symbol ='✶'
+    #         print(symbol)
+    #     elif event.keysym=='6':
+    #         symbol ='●'
+    #     elif event.keysym=='7':
+    #         symbol ='░'
+    #     elif event.keysym=='8':
+    #         symbol ='▒'
+    #     elif event.keysym=='9':
+    #         symbol ='▓'
+    #     elif event.keysym=='0':
+    #         symbol ='█'
+    #     elif event.keysym=='p' or event.keysym=='P':
+    #         symbol ='←'      
+    #     elif event.keysym=='[' or event.keysym=='{':
+    #         symbol ='↑'      
+    #     elif event.keysym==']' or event.keysym=='}':
+    #         symbol ='→'      
+    #     elif event.keysym=="'" or event.keysym=="@":
+    #         symbol ='↓'      
+    #     elif event.keysym=='t' or event.keysym=='T':
+    #         symbol ='■'
+    #     elif event.keysym=='y' or event.keysym=='Y':
+    #         symbol ='▪'
+            
+    #     self.view.text_area.insert(pointer, symbol)
+            
+    #     return 'break'
+        
+    #? Not in use.
+    # This is to define the shortcut using CTRL.
+    # def control_key_pressed(self,event):
+        
+    #     #! ⚠️ Not all shorcuts allows being rewriten:
+    #     # ctrl + t, ctrl + 5, Ctrl + .
+        
+    #     # if event.keysym=='i' or event.keysym=='I':
+    #     #     self.take_text("fi")
+    #     if event.keysym=='r':
+    #         self.take_text("nn")
+            
+    #     elif event.keysym=='b' or event.keysym=='2':
+    #         self.take_text("fb")
+            
+    #     elif event.keysym=='j' or event.keysym=='3':
+    #         self.take_text("fi")
+            
+    #     elif event.keysym=='4':
+    #         self.take_text("fd")
+            
+    #     elif event.keysym=='5':
+    #         self.take_text("td")
+            
+    #     elif event.keysym=='h' or event.keysym=='6':
+    #         self.take_text("hn")
+            
+    #     elif event.keysym=='7':
+    #         self.take_text("sn")
+            
+    #     elif event.keysym=='w' or event.keysym=='8':
+    #         self.take_text("wn")
+            
+    #     elif event.keysym=='l' or event.keysym=='9':
+    #         self.take_text("ln")
+            
+    #     elif event.keysym=='c':
+    #         self.copy()
+            
+    #     elif event.keysym=='v':
+    #         self.paste()
+             
+    #     elif event.keysym=='a':
+    #         self.select_all() 
+             
+    #     elif event.keysym=='x':
+    #         self.cut()
+             
+    #     elif event.keysym=='o':
+    #         self.open_file() 
+             
+    #     elif event.keysym=='s' and event.keysym=='Shift_L':
+    #         self.save_as() 
+            
+    #     elif event.keysym=='s':
+    #         self.save_file()  
+             
+    #     elif event.keysym=='.':
+    #         self.close_app()      
+            
+    #     elif event.keysym=='n':
+    #         self.new_file()  
+             
+    #     elif event.keysym=='plus':
+    #         self.zoom_in() 
+            
+    #     elif event.keysym=='minus':
+    #         self.zoom_out()  
+             
+    #     elif event.keysym=='0':
+    #         self.zoom_reset()     
+             
+    #     elif event.keysym=='f':
+    #         self.search()   
+    #         # self.open_search()  
+             
+    #     elif event.keysym=='m':
+    #         self.switch_mode()
+                        
+    #     return 'break'
+        
+
+
+
+
+
+
+           # elif event.keysym=='c':
+            #     self.copy()
+                
+            # elif event.keysym=='v':
+            #     self.paste()
+                
+            # elif event.keysym=='a':
+            #     self.select_all() 
+                
+            # elif event.keysym=='x':
+            #     self.cut()
+
+
+
+
+
+
+
+
+           
+        # print("esto: ",event.keysym)
+        # print(vars(event))
+        
+        # if event.keysym=='Control-2' and event.state & 4:
+        #     print("entro")
+        #     self.take_text("fi")
+        # elif event.keysym=='Control-m':
+        #     self.switch_mode()
