@@ -1,6 +1,7 @@
 
 
 import os
+import gc
 from Main.view import View
 from Main.extraView import ExtraWindow
 from Main.auxMenu import Aux_menu
@@ -13,8 +14,10 @@ from datetime import datetime
 from tkinter import messagebox as MessageBox
 
 
+
 class ViewModel(object):  
     
+    instances = []
     file = None
     select_text = ""
     search_word: str = ""
@@ -25,16 +28,21 @@ class ViewModel(object):
     tag_position: int = 0
     key_alt_r: bool = False
     key_control_l: bool = False
+    index_start: str = "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
+    index_end: str = "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"
+    sub_index: str =  "■"
+    
     
     def __init__(self) -> None:
-        self.model = Model()
-        self.calc = Calculation()
+        #self.name = name
+        self.model = Model()#
+        self.calc = Calculation()#
         self.view = View(self)
+        self.instances.append(self.view)
         # self.aux_menu = Aux_menu(self)
+        self.search_view = None
         
-        # self.ex_view = ExtraWindow(self)
-        
-        
+                
         
          # SHORTCUTS:
         self.view.bind("<Control-n>", self.new_file)
@@ -61,7 +69,7 @@ class ViewModel(object):
 
         self.view.text_area.bind("<KeyRelease-Return>", self.save_step)
         
-
+        
     def test123(self, event):
         print("Working!")
 
@@ -69,12 +77,14 @@ class ViewModel(object):
         self.view.run()
         
     def callAux(self, event):
-        self.search_view = Aux_menu(self)
+        self.left_menu = Aux_menu(self)
         
         try:
-            self.search_view.popup_menu.tk_popup(event.x_root, event.y_root, 0)
+            self.left_menu.popup_menu.tk_popup(event.x_root, event.y_root, 0)
         finally:
-            self.search_view.popup_menu.grab_release()
+            self.left_menu.popup_menu.grab_release()
+            
+            # left_menu Before was called search_view
         
     def calculate(self):
         if self.view.text_area.selection_get():
@@ -454,8 +464,31 @@ class ViewModel(object):
         # Must be limited the number of window to one: If is open...
         self.enable_replace = tk.StringVar()
         self.input_search = tk.StringVar()
-        self.input_replace = tk.StringVar()    
-        self.search_view = ExtraWindow(self, "Search")
+        self.input_replace = tk.StringVar()
+        
+        
+        if isinstance(self.search_view, ExtraWindow):
+            print("Ya existe")
+            print(self.search_view)
+            self.search_view.focus_search()
+        #     search_input.focus_set()
+        
+        # if (self.instance_exists(self.search_view)):
+        #     print("Ya existe")
+        else:
+            print("No existe")
+            self.search_view = ExtraWindow(self, "Search")
+            self.instances.append(self.search_view)
+        
+        # if instance.ExtraWindow == ExtraWindow for instance in instances:
+        #     print("EXISTE")
+        #     # If the search_frame already exists, bring it to the front
+        #     self.search_view.lift()
+        # else:
+        #     print("No existe")
+        #     self.search_view = ExtraWindow(self, "Search")
+        
+        
         
         
         
@@ -496,7 +529,14 @@ class ViewModel(object):
             self.view.day_mode = "🌙"
             self.view.menu_bar.entryconfig(5, label="🌙")
             
-            
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ INDEX ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+        
+    def find_index(self):
+        
+        
+        pass
+          
+        
             
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ SEARCH FUNCTION ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
@@ -535,15 +575,7 @@ class ViewModel(object):
             
             
     def search_text(self):
-        
-    #self.search_word = self.search_word if self.search_word is not None else ""
-       
-       # search_list:  ['4.10+2c', '5.8+2c', '6.13+2c', '8.12+2c', '27.14+2c']
-       # print("Prime: ",self.search_word)
-
-       
-        #if self.replace_word != self.replace_word.get():
-        #    pass
+   
        
         self.search_word = self.input_search.get()
         self.replace_word = self.input_replace.get()
@@ -554,15 +586,14 @@ class ViewModel(object):
             self.replace_text()
         
         if self.search_word:
-            # if S != current entry value → clean list and remove tags:: New search
-            #if self.search_word != self.input_search.get():
+ 
             self.search_list.clear()
             self.search_list_idx.clear()
             self.view.text_area.tag_remove(tk.SEL, 1.0,"end-1c")
             self.total_matches = 0
             self.tag_position = 0
                 
-            #self.search_word = self.input_search.get()
+
             
             self.total_matches = self.search_all()
             
@@ -647,8 +678,14 @@ class ViewModel(object):
         pass
         
         
+    def instance_exists(self, name):
+        return any(name for instance in self.instances)    
+    
+    def delete_instance(self,instance):
         
-        
+        if (self.search_view):
+            self.search_view = None
+            gc.collect()
         
         
         

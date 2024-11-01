@@ -157,3 +157,28 @@
         #     self.take_text("fi")
         # elif event.keysym=='Control-m':
         #     self.switch_mode()
+
+
+
+
+
+
+
+SEARCH FUNTION
+
+             
+    #self.search_word = self.search_word if self.search_word is not None else ""
+       
+       # search_list:  ['4.10+2c', '5.8+2c', '6.13+2c', '8.12+2c', '27.14+2c']
+       # print("Prime: ",self.search_word)
+
+       
+        #if self.replace_word != self.replace_word.get():
+        #    pass
+
+
+
+                   # if S != current entry value → clean list and remove tags:: New search
+            #if self.search_word != self.input_search.get():
+
+             #self.search_word = self.input_search.get()

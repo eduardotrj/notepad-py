@@ -7,13 +7,17 @@ from tkinter import ttk
 
 # to choice which window is desire, needs receive a name.
 class ExtraWindow():
-    _title = "Search"
+    #_title = "Search"
+    _title: str = ""
     _width = 500
     _height = 200
+    existWindow: bool = False
+    _focusElement: object
+    
     
     def __init__(self, controller, name:str) -> None:
         super().__init__()
-        
+        self.name = name
         self.controller = controller
         root_frame = controller.view
     
@@ -21,8 +25,18 @@ class ExtraWindow():
         self.window_title(name)
         self.window_icon(name)
         
+        self.new_window.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+        
+        # if (isinstance.search_frame()):
+        #     print("esta mamada existe wey")
+        #self.open_window.protocol("WM_DELETE_WINDOW", self.open_window.iconify)
+        # make Esc exit the program
+        #self.open_window.bind('<Escape>', lambda e: self.open_window.destroy())
+        
         if name == "Search":
-             self.search_view()
+            self.search_view()
+             # self.search_view().input_search.focus_set()
              
         self.position(root_frame)
         
@@ -54,11 +68,10 @@ class ExtraWindow():
             self._width, self._height,left, top
             )) 
         
-    
-            
+
     def search_view(self):
         #Min width and height: 380, 175
-
+        
         self.new_window.minsize(380, 175)
         self.search_frame = tk.Frame(self.new_window)
         # (0,0)
@@ -67,6 +80,9 @@ class ExtraWindow():
         # (0,1) - (1,1)
         search_input = ttk.Entry(master = self.search_frame, textvariable = self.controller.input_search)
         search_input.grid(column=0, row=1, columnspan=2, sticky='ew', padx=10, pady=4)
+        self._focusElement = search_input
+        self.focus_search()
+        #search_input.focus_set()
         # (2,1)
         self.quantity_label = ttk.Label(master = self.search_frame, text = "0 found")
         self.quantity_label.grid(column=2, row=1, padx=10, pady=4, sticky='w')
@@ -97,6 +113,10 @@ class ExtraWindow():
         
         self.search_frame.grid_columnconfigure(1, weight=1)
         self.search_frame.grid_rowconfigure(3, weight=1)
+
+    def focus_search(self):
+        self._focusElement.focus_set()
+        
         
         
     def add_replace_option(self):
@@ -112,3 +132,11 @@ class ExtraWindow():
         
         self.quantity_label.config(text = str(self.controller.tag_position+1) + "/" + str(self.controller.total_matches) + " found")
  
+
+
+    def on_closing(self):
+        self.new_window.destroy()
+        self.controller.delete_instance(self)
+        
+
+# <Main.extraView.ExtraWindow object at 0x000001E8C3441950>
