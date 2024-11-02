@@ -1,5 +1,5 @@
 import cmath
-# from Main.fonts import fonts
+from Main.fonts import OPERATORS as OP
 
 class Calculation:
     
@@ -34,29 +34,101 @@ class Calculation:
         # float(string) // str(float)
         # isDigit()  len()   count()   find() rfind() startwith()  endwith()   index() rindex()   strip()
         
-        
-        
+    
         print(math_op)
         operation: str = math_op.replace(' ', '')
         
-        # if  len(operation) < 1:
-        #     return "Error"
+       
+        # result = self._analyze_operation(operation)
         
         if operation.find(SYMBOLS[2]) != -1:
             numbers = operation.split(SYMBOLS[2],-1)
-            a = float(numbers[0])
-            b = float(numbers[1])        
+            result = self._do_add(
+                float(numbers[0]),
+                float(numbers[1])
+                )
+            
+        elif operation.find(SYMBOLS[3]) != -1:
+            numbers = operation.split(SYMBOLS[3],-1)
+            result = self._do_sub(
+                float(numbers[0]),
+                float(numbers[1])
+                )
+            
+        elif operation.find(SYMBOLS[0]) != -1:
+            numbers = operation.split(SYMBOLS[0],-1)
+            result = self._do_mult(
+                float(numbers[0]),
+                float(numbers[1])
+                )
+            
+        elif operation.find(SYMBOLS[1]) != -1:
+            numbers = operation.split(SYMBOLS[1],-1)
+            result = self._do_div(
+                float(numbers[0]),
+                float(numbers[1])
+                )
         
-        result = self._do_add(a,b)
 
-        print(str(result))
+        # print(str(result))
         
         return str(result)
         
+    def _analyze_operation(self, operation):
+
+            
+        for i in range (3):
+            if (operation.find(OP["BRACK_O"][i]) != -1) and (operation.find(OP["BRACK_C"][i]) != -1):
+                
+                start = operation.index(OP["BRACK_O"][i])
+                numbers = operation.split(SYMBOLS[2],-1)
+                
+                end = operation.index(OP["BRACK_C"][i])
+                
+                
+                
+            elif (operation.find(OP["BRACK_O"][i]) != -1) != (operation.find(OP["BRACK_C"][i]) != -1):
         
+                print("1 not pair" )
+                
+            else:
+                print("Not Brackets")
+            
+            
+            
+            # if (operation.find(symbol) != -1) and (operation.find(symbol) != -1):    # → it have it
+                
+            #     type_bracket = OP["BRACK_O"].index(symbol)
+            #     closed_bracket = OP["BRACK_C"][type_bracket]
+            #     start = operation.index(symbol)
+            #     end = operation
+                
+                
+               # numbers = operation.split(SYMBOLS[0],-1)
+            
+                
+        
+        # if operation.find():
+        #     pass
+        # pass
+        return "hhello"
+    
+    
         
     def _do_add(self, a, b):
         return a + b
+    
+    def _do_sub(self, a, b):
+        return a - b
+    
+    def _do_mult(self, a, b):
+        return a * b
+    
+    def _do_div(self, a, b):
+        if a or b == 0:
+            return '∞'
+        else:
+            return a / b
 
         
         

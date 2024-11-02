@@ -1,7 +1,7 @@
 
 from tkinter.messagebox import *
 from tkinter.filedialog import *
-from Main.fonts import fonts
+from Main.fonts import FONTS
 
 
 class Model:
@@ -21,15 +21,15 @@ class Model:
     def apply_style(self,chart:str ,style:str="nn") -> str:
         new_chart = ""
         print(chart)
-        for font in fonts.values():
+        for font in FONTS.values():
             if chart in font:
                 new_chart = font.index(chart)
     
         if new_chart:
-            new_chart = fonts[style][new_chart]
+            new_chart = FONTS[style][new_chart]
         
         elif str(new_chart) == '0': # To avoid treat 0 as false, or null.
-            new_chart = fonts[style][0]
+            new_chart = FONTS[style][0]
         
         else:
             new_chart = chart
