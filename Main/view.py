@@ -6,6 +6,7 @@ from tkinter.filedialog import *
 
 class View(tk.Tk):
     
+    _index_started: bool = False
     _title = " - Notepad"
     _default_width = 1800       #1150
     _default_height = 1000       #600
@@ -15,6 +16,7 @@ class View(tk.Tk):
     n_font =  default_size
     font_list = (1,2,3,4,5,6,7,8,9,11,13,14,15,16,17,18,19,20,21,22,24,26,28,30,33,36,39,43,48,54,60,72,84)
     zoom_list = ("10%","20%","30%","40%","50%","60%","70%","80%","90%","100%","110%","120%","130%","140%","150%","160%","170%","180%","190%","200%","220%","240%","260%","280%","300%","320%","350%","400%","440%","500%","550%","600%","800%")
+    _tree_elements: dict
 
     
     def __init__(self, controller):
@@ -31,6 +33,7 @@ class View(tk.Tk):
         self.set_view_menu()
         self.set_help_menu()
         self.set_night_option()
+        self.set_index()
         self.set_text_area()
         self.set_size()
         self.set_font()
@@ -43,16 +46,81 @@ class View(tk.Tk):
 
     def _make_frame(self):
         self.frame = tk.Frame(self)
+        self.frame.grid_rowconfigure(0, weight=0)
+        self.frame.grid_columnconfigure(1, weight=1)
         
     def set_icon(self):
         self.iconbitmap('Assets/Icons/NotePad_32.ico' )
           
         # Option to change preferences in a future about color
+        
+    def set_index(self):
+        
+        
+        
+        self.index_tree = ttk.Treeview(columns="one", show='headings')
+        self.index_tree.heading("one", text="Index")
+        self.index_tree.column("one", width=200)
+        self.index_tree.grid(row=0, column=0, sticky="nsw")
+        style = ttk.Style()
+        style.configure('Treeview', rowheight=40)
+        self._index_started = True
+        empty_simbol = 'ㅤ'
+        i=0
+        
+        
+        if self._index_started:
+            i=0
+            # self.controller.delete_instance(self)
+            for element in self.index_tree.get_children():
+                self.index_tree.delete()[element]
+                self.index_tree.insert('', 'end', values="")
+                
+            #for i in 
+                
+                
+        
+        for key, value in self.controller.titles_dict.items():
+            i+=1
+            new_value = str(i)+ "."+ empty_simbol +str(key).replace(" ", empty_simbol)
+            iid = self.index_tree.insert("", tk.END, values=(new_value))
+            # print(iid)
+            #self._tree_elements[iid]=new_value
+        
+        # " " is not supported in the first column. Use "ㅤ" instead.
+
+        def item_selected(event):
+            for selected_item in self.index_tree.selection():
+                item = self.index_tree.item(selected_item)
+                record = item['values']
+                # Record = ['1.ㅤName ett']  → Remove from part from "ㅤ" & back part from "'"
+                record = str(record).split(empty_simbol,1)[1]
+                record = record.split('\'',1)[0]
+                
+                record = record.replace(empty_simbol, ' ')
+                self.controller.go_select_title(record)
+                
+                
+                
+
+# Bind the click event to the callback function
+        self.index_tree.bind('<<TreeviewSelect>>', item_selected)
+
+        # ● Adaptative height to Treeview
+        # style = ttk.Style()
+        # style.configure("Treeview.Heading", font=(None, LARGE_FONT), \
+        #         rowheight=int(LARGE_FONT*2.5))
+        # style.configure("Treeview", font=(None, MON_FONTSIZE), \
+        #         rowheight=int(MON_FONTSIZE*2.5))
+        
+        
+        
+        
     def set_text_area(self):
         self.text_area = tk.Text(self)
+        #self.text_area.grid(row=0, column=1, sticky="nsew")
         scrollbar = tk.Scrollbar(self.text_area)
-        
-        self.text_area.grid(sticky = tk.N + tk.E + tk.S + tk.W)
+        self.text_area.grid(row=0, column=1, sticky = tk.N + tk.E + tk.S + tk.W)
         scrollbar.pack(side=RIGHT,fill=tk.Y)
         scrollbar.config(command=self.text_area.yview)
         self.text_area.config(
@@ -65,7 +133,7 @@ class View(tk.Tk):
                               )
         
         self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1) 
+        self.grid_columnconfigure(1, weight=1) 
         self.tk.call('tk', 'scaling', self._zoom)
         
         

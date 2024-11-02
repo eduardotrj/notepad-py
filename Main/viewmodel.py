@@ -2,6 +2,7 @@
 
 import os
 import gc
+from collections import OrderedDict
 from Main.view import View
 from Main.extraView import ExtraWindow
 from Main.auxMenu import Aux_menu
@@ -26,10 +27,12 @@ class ViewModel(object):
     search_list_idx = list()
     total_matches: int = 0
     tag_position: int = 0
+    titles_dict: dict = {}
+    sub_titles_dict: dict = {}
     key_alt_r: bool = False
     key_control_l: bool = False
     index_start: str = "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
-    index_end: str = "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"
+    #index_end: str = "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"
     sub_index: str =  "■"
     
     
@@ -401,7 +404,7 @@ class ViewModel(object):
                 new_text = f"""▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 {part1}  {new_text}  {part2}
 ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"""
-
+                
                 
             elif style == 2:
                 new_character_list = map(lambda x: self.model.apply_style(x, "fb"), self.select_text)
@@ -447,6 +450,7 @@ class ViewModel(object):
             
             
             self.view.text_area.insert(position,new_text)
+            self.find_index()
         
         
 
@@ -530,13 +534,75 @@ class ViewModel(object):
             self.view.menu_bar.entryconfig(5, label="🌙")
             
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ INDEX ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
+    
+    def go_select_title(self, index):
         
+        idx = str(self.titles_dict[index] + 10.0)  # Add + 10 to center the focus.
+        
+        counter_list = []
+        counter_list = str(idx).split('.')
+        
+        # add athe pointer entry before the new find word, and put focus on it.
+        self.view.text_area.mark_set("insert", "%d.%d" % (float(int(counter_list[0])), 
+                                                            float(int(counter_list[1]))))
+        self.view.text_area.see(float(int(counter_list[0])))
+        
+        
+ # Create a temp_dict. Charge all titles.
+ # Check is is changes between temp_dict and self.titles_dict.
+#       IF() → Update it.
+ 
+ 
     def find_index(self):
+        temp_dict: dict = {}
+        # for key in 
+        idx = "1.0"
         
+        print("Nuevo DICCIONARIOL:")
+        while(idx):
+            # Get position 1.0 only the first time.
+            if temp_dict == {}:  # if list is empty, move one position in the list.
+                temp_dict[self.view._title]= 1.0
+            else:
+                # Make sure the dict is sorted. Them, get the last position.
+                #? Because a new dict is created, not need to sort it.
+                # sorted_dict = {key: value for key, value in sorted(self.titles_dict.items(), key=lambda item: item[1])}
+                # idx = str(list(sorted_dict.values())[-1])
+                idx = str(list(temp_dict.values())[-1]) 
+                idx = self.view.text_area.search(self.index_start, idx, nocase=1, stopindex=tk.END) # Search next.
+                
+                if idx:
+                    next_line = float(idx) + 1  # Where the title is located
+                    lastPosition = str(next_line).split('.',1)[0]
+                    line_content = self.view.text_area.get(f"{next_line}", f"{lastPosition}.end")
+                    line_content = line_content.split('  ',-1)[1]
+                    
+                    temp_dict[line_content]=next_line
+                    
+                    print(temp_dict)
+                    
+                    
+                
+                else:
+                    break
+
+
+        # Uptade self.titles_dict using the temp_dict
+        self.titles_dict.update(temp_dict)
+        self.titles_dict = {key: value for key, value in sorted(self.titles_dict.items(), key=lambda item: item[1])}
+        # Clean deleted elements:
         
-        pass
-          
+        for key in self.titles_dict.copy():
+            if not key in temp_dict:
+                del self.titles_dict[key]
+ 
         
+        print("DICCIONARIOL Updated:")
+        print(self.titles_dict)
+        # def on_closing(self):
+        # self.new_window.destroy()
+        # self.controller.delete_instance(self)
+        self.view.set_index()
             
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ SEARCH FUNCTION ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 
@@ -672,20 +738,40 @@ class ViewModel(object):
     
     
     
-    def save_step(self):
+    def save_step(self, obj):
         # Must be called after press any arrow, enter, backspace or (click and write)
         # print("The cursor is at: ", entry.index(INSERT))
         pass
         
         
-    def instance_exists(self, name):
-        return any(name for instance in self.instances)    
+    # def instance_exists(self, name):
+    #     return any(name for instance in self.instances)    
     
-    def delete_instance(self,instance):
+    def delete_instance(self, instance):
+        #print("LA instancia recibida es de "+ instance)
         
-        if (self.search_view):
+        
+        # if instance == "search_view":
+        
+        if isinstance(instance, ExtraWindow) and self.search_view:
             self.search_view = None
             gc.collect()
+            
+        # if self.index_tree:
+        #     self.index_tree = None
+        #     gc.collect()    
+            
+            
+            
+        # if (self.search_view):
+        #     self.search_view = None
+        #     gc.collect()
+                
+        # if instance == "index":
+        #     pass
+        
+        
+        
         
         
         

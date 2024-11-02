@@ -63,6 +63,10 @@ class Aux_menu(tk.Listbox):
         self.popup_menu.add_command(label="Delete", command=self.controller.delete)
         self.popup_menu.add_command(label="Select All", accelerator="Ctrl+A", command=self.controller.select_all)
         
+        
+        self.popup_menu.add_separator()
+        self.popup_menu.add_command(label="Update Index", command=self.controller.find_index)
+
     #def aux_menu(self, x: int=0, y:int=0, entry=""):
         
         

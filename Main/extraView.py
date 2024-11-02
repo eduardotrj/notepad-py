@@ -77,7 +77,7 @@ class ExtraWindow():
         # (0,0)
         label_title = ttk.Label(master = self.search_frame, text = "Search:")
         label_title.grid(column=0, row=0, sticky='w')
-        # (0,1) - (1,1)
+        # (0,1) - (1,1)tag
         search_input = ttk.Entry(master = self.search_frame, textvariable = self.controller.input_search)
         search_input.grid(column=0, row=1, columnspan=2, sticky='ew', padx=10, pady=4)
         self._focusElement = search_input
