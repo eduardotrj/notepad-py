@@ -561,7 +561,7 @@ class ViewModel(object):
         while(idx):
             # Get position 1.0 only the first time.
             if temp_dict == {}:  # if list is empty, move one position in the list.
-                temp_dict[self.view._title]= 1.0
+                temp_dict[self.view._open_file]= 1.0
             else:
                 # Make sure the dict is sorted. Them, get the last position.
                 #? Because a new dict is created, not need to sort it.

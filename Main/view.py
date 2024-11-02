@@ -8,6 +8,7 @@ class View(tk.Tk):
     
     _index_started: bool = False
     _title = " - Notepad"
+    _open_file: str = ""
     _default_width = 1800       #1150
     _default_height = 1000       #600
     day_mode = "🌙"
@@ -141,6 +142,7 @@ class View(tk.Tk):
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ WINDOW SETTINGS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
         
     def set_title(self, name:str="Untitled"):
+        self._open_file = name
         self.title(name + self._title )
         
                         
