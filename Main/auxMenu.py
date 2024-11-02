@@ -54,7 +54,7 @@ class Aux_menu(tk.Listbox):
         self.popup_menu.add_cascade(label="Design", menu=designs_menu)
         
         
-        self.popup_menu.add_command(label="Calculate", command=self.controller.calculate)
+        self.popup_menu.add_command(label="Calculate", command=self.controller.do_operations)
         self.popup_menu.add_command(label="Add time", command=self.controller.print_time)
         self.popup_menu.add_separator()
         self.popup_menu.add_command(label="copy", command=self.controller.copy)

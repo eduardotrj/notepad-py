@@ -39,7 +39,7 @@ class ViewModel(object):
     def __init__(self) -> None:
         #self.name = name
         self.model = Model()#
-        self.calc = Calculation()#
+        self.calc = Calculation()
         self.view = View(self)
         self.instances.append(self.view)
         # self.aux_menu = Aux_menu(self)
@@ -89,26 +89,25 @@ class ViewModel(object):
             
             # left_menu Before was called search_view
         
-    def calculate(self):
+    def do_operations(self):
         if self.view.text_area.selection_get():
             
             
             self.select_text = self.view.text_area.selection_get()
             # self.select_text = [*self.select_text]
-            self.calc.calculate(self.select_text)
-            
-            # print("the style taken: ",self.select_text)
+       
             
             
             line, column = map(int, self.view.text_area.index('sel.first').split('.'))
             position = (str(line) + "." + str(column))
             self.view.text_area.delete('sel.first','sel.last')
             
-            # # new_character_list = map(lambda x: self.model.apply_style(x, style), self.select_text)
-            # #print(list(new_character_list))    #! LEAVE TO CHECK ERROrs
-            # new_text = ''.join(new_character_list)
-            # print(new_text)
-            # self.view.text_area.insert(position,new_text) 
+            operation:str = self.select_text
+            
+            solution = self.calc.calculate(operation)
+            # Calculation.calculate(operation)
+         
+            self.view.text_area.insert(position,solution) 
        
         
     # def open_search(self):
