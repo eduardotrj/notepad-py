@@ -1,5 +1,6 @@
 import cmath
 from Main.fonts import OPERATORS as OP
+from Main.extraView import MessageWindow
 
 class Calculation:
     
@@ -125,10 +126,12 @@ class Calculation:
         return a * b
     
     def _do_div(self, a, b):
-        if a or b == 0:
-            return '∞'
-        else:
+        try:
             return a / b
+        except:
+            MessageWindow.show_message("Division by 0", "error")
+            return '∞'
+        
 
         
         

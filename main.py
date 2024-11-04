@@ -1,6 +1,8 @@
 from Main.viewmodel import ViewModel
 from ctypes import windll
 
+
+# TODO → Make sharp the image.
 windll.shcore.SetProcessDpiAwareness(1)
 
 

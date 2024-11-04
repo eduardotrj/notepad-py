@@ -12,5 +12,5 @@ setup(
     version="0.7",
     description="Notepad with advanced options",
     options={"build_exe": build_exe_options},
-    executables=[Executable("guifoo.py", base="gui")],
+    executables=[Executable("main.py", base="gui")],
 )

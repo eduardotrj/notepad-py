@@ -6,23 +6,33 @@ from tkinter.filedialog import *
 
 class View(tk.Tk):
     
-    _index_started: bool = False
-    _title = " - Notepad"
+    """Build the window with the main elements of the Notepad
+    
+    """
+    
+    EMPTY_SYMBOL: str = 'ㅤ'
+    FONT_LIST = (1,2,3,4,5,6,7,8,9,11,13,14,15,16,17,18,19,20,21,22,24,26,28,30,33,36,39,43,48,54,60,72,84)
+    ZOOM_LIST = ("10%","20%","30%","40%","50%","60%","70%","80%","90%","100%","110%","120%","130%","140%","150%","160%","170%","180%","190%","200%","220%","240%","260%","280%","300%","320%","350%","400%","440%","500%","550%","600%","800%")
+    
+    # Default Attributes:
+    _title: str = " - Notepad"
     _open_file: str = ""
-    _default_width = 1800       #1150
-    _default_height = 1000       #600
+    _default_width: int = 1800       #1150
+    _default_height: int = 1000       #600
     day_mode = "🌙"
-    _zoom = 2.6     #1.6 Normal,  2.6 perfect for HD full screen.
-    default_size = 9
+    _zoom: float = 2.6     #1.6 Normal,  2.6 perfect for HD full screen.
+    default_size: int = 9
     n_font =  default_size
-    font_list = (1,2,3,4,5,6,7,8,9,11,13,14,15,16,17,18,19,20,21,22,24,26,28,30,33,36,39,43,48,54,60,72,84)
-    zoom_list = ("10%","20%","30%","40%","50%","60%","70%","80%","90%","100%","110%","120%","130%","140%","150%","160%","170%","180%","190%","200%","220%","240%","260%","280%","300%","320%","350%","400%","440%","500%","550%","600%","800%")
     _tree_elements: dict
 
     
     def __init__(self, controller):
+        
         super().__init__()
-
+        
+        self._index_active: bool = True
+        self.index_tree = None
+        self._index_width: int = 200 #20 - 200
         self.controller = controller
         
         self._make_frame()
@@ -46,80 +56,88 @@ class View(tk.Tk):
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ WINDOW BUILDING ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
 
     def _make_frame(self):
+        """
+            Create the main frame by Grid divided in 2 columns.
+        """
         self.frame = tk.Frame(self)
         self.frame.grid_rowconfigure(0, weight=0)
         self.frame.grid_columnconfigure(1, weight=1)
         
+        
     def set_icon(self):
+        """
+            Set Window Icon
+        """
         self.iconbitmap('Assets/Icons/NotePad_32.ico' )
-          
-        # Option to change preferences in a future about color
+    
+    def index_width(self):
+        # ! By unknown reason is not possible to change the column width after the first config.
+        # https://github.com/python/cpython/blob/main/Doc/library/tkinter.ttk.rst?plain=1
+        
+        self._index_width = 20 if (self._index_width >= 200) else 200
+        # self.index_tree.column("one", width=20)
+        # self.index_tree.set_column_width("one", width=self._index_width)
+        self.index_tree.heading("one", text="🗊 Index")
+        
+
         
     def set_index(self):
+        """Generate a interactive Index (TreeView) in the column [0] of the Frame. 
         
-        
-        
+            Build the Treeview widget, with a head text "Index",
+            one column of 200 width. Make the element sticky to NSW,
+            and a row height of 40 to leave space between the text lines.
+            
+            Define 2 Kind of events;
+                ▪ When the click on Header → self.index_width()
+                ▪ Click in any element(row) → self.controller.go_select_title(record)
+        """
         self.index_tree = ttk.Treeview(columns="one", show='headings')
-        self.index_tree.heading("one", text="Index")
-        self.index_tree.column("one", width=200)
+        self.index_tree.heading("one", text="Index", command=self.index_width)
+        self.index_tree.column("one", width=self._index_width)
         self.index_tree.grid(row=0, column=0, sticky="nsw")
         style = ttk.Style()
         style.configure('Treeview', rowheight=40)
-        self._index_started = True
-        empty_simbol = 'ㅤ'
-        i=0
         
         
-        if self._index_started:
-            i=0
-            # self.controller.delete_instance(self)
-            for element in self.index_tree.get_children():
-                self.index_tree.delete()[element]
-                self.index_tree.insert('', 'end', values="")
-                
-            #for i in 
-                
-                
-        
-        for key, value in self.controller.titles_dict.items():
-            i+=1
-            new_value = str(i)+ "."+ empty_simbol +str(key).replace(" ", empty_simbol)
-            iid = self.index_tree.insert("", tk.END, values=(new_value))
-            # print(iid)
-            #self._tree_elements[iid]=new_value
-        
-        # " " is not supported in the first column. Use "ㅤ" instead.
-
         def item_selected(event):
+            # Take the text from the element clicked and send it to go_select_title().
             for selected_item in self.index_tree.selection():
                 item = self.index_tree.item(selected_item)
+                print(item)
                 record = item['values']
                 # Record = ['1.ㅤName ett']  → Remove from part from "ㅤ" & back part from "'"
-                record = str(record).split(empty_simbol,1)[1]
+                record = str(record).split(self.EMPTY_SYMBOL,1)[1]
                 record = record.split('\'',1)[0]
                 
-                record = record.replace(empty_simbol, ' ')
-                self.controller.go_select_title(record)
-                
-                
-                
+                record = record.replace(self.EMPTY_SYMBOL, ' ')
+                self.controller.go_select_title(record)        
 
-# Bind the click event to the callback function
+    # Bind the click event to the callback function
         self.index_tree.bind('<<TreeviewSelect>>', item_selected)
 
-        # ● Adaptative height to Treeview
-        # style = ttk.Style()
-        # style.configure("Treeview.Heading", font=(None, LARGE_FONT), \
-        #         rowheight=int(LARGE_FONT*2.5))
-        # style.configure("Treeview", font=(None, MON_FONTSIZE), \
-        #         rowheight=int(MON_FONTSIZE*2.5))
-        
-        
-        
+            # ● Adaptative height to Treeview
+            # style = ttk.Style()
+            # style.configure("Treeview.Heading", font=(None, LARGE_FONT), \
+            #         rowheight=int(LARGE_FONT*2.5))
+            # style.configure("Treeview", font=(None, MON_FONTSIZE), \
+            #         rowheight=int(MON_FONTSIZE*2.5))
+            
         
     def set_text_area(self):
+        """Draw the Text Area Widget
+        
+        Place it in the column[1], make sticky to all sides. 
+        Add a Scrollbar at Y axis.
+        
+        Configure Text area:
+        ▪ Scrollbar Y active.
+        ▪ Select text color: #fcba03 (Imperial Yellow).
+        ▪ Select text color, back focus: bd9833 (Ochre).
+        ▪ Undo and Autoseparator activated. 
+        ▪ Default zoom size.
+        """
         self.text_area = tk.Text(self)
-        #self.text_area.grid(row=0, column=1, sticky="nsew")
         scrollbar = tk.Scrollbar(self.text_area)
         self.text_area.grid(row=0, column=1, sticky = tk.N + tk.E + tk.S + tk.W)
         scrollbar.pack(side=RIGHT,fill=tk.Y)
@@ -132,21 +150,31 @@ class View(tk.Tk):
             autoseparators=True,
             #maxundo=-1
                               )
-        
+    
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1) 
         self.tk.call('tk', 'scaling', self._zoom)
-        
-        
+                
         
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ WINDOW SETTINGS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
         
     def set_title(self, name:str="Untitled"):
+        """Set the window title.
+
+        Args:
+            name (str, optional): _description_. Defaults to "Untitled".
+        """
         self._open_file = name
         self.title(name + self._title )
         
                         
     def set_size(self):
+        """ Set the window size in base default values
+        
+         TODO Option to take last specific size or edit default by configuration
+        """
+        
+        #Calculate the center of the window.
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
         left = (screen_width / 2) - (self._default_width / 2)
@@ -157,16 +185,27 @@ class View(tk.Tk):
         
         
     def set_font(self, size:int=9):
-        self.text_area.configure(font = ("Consolas", self.font_list[size], "normal"))
+        """ Define the font size of the notebook.
+
+        Args:
+            size (int, optional): _description_. Defaults to 9.
+        """
+        self.text_area.configure(font = ("Consolas", self.FONT_LIST[size], "normal"))
         
     def set_zoom(self, size:int=9):
-        self.menu_bar.entryconfig(3, label = "🔎 "+self.zoom_list[size])
+        """ Define zoom size over the same font size.
+
+        Args:
+            size (int, optional): _description_. Defaults to 9.
+        """
+        self.menu_bar.entryconfig(3, label = "🔎 "+self.ZOOM_LIST[size])
         
-   
         
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ MENU BUILDING ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■   
     
     def _set_menu(self):
+        """Build the menu bar/
+        """
         self.menu_bar = tk.Menu(self)
         self.config(menu=self.menu_bar)
         
@@ -208,7 +247,6 @@ class View(tk.Tk):
         style_menu.add_command(label="Bubble", command=lambda style= "bn": self.controller.take_text(style))
         style_menu.add_command(label="Fullwidth", accelerator="Ctrl+L", command=lambda style= "ln": self.controller.take_text(style))
         style_menu.add_command(label="Super Index", command=lambda style= "mn": self.controller.take_text(style))
-
 
         style_menu.add_command(label="Remove style", accelerator="Ctrl+R", command=lambda style= "nn": self.controller.take_text(style))
     

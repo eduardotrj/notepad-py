@@ -5,9 +5,12 @@ import gc
 from collections import OrderedDict
 from Main.view import View
 from Main.extraView import ExtraWindow
+from Main.extraView import MessageWindow
+
 from Main.auxMenu import Aux_menu
 from Main.model import Model
 from Main.calculate import Calculation
+
 # from Main.searchMenu import SearchMenu
 import tkinter as tk 
 from tkinter.filedialog import *
@@ -18,9 +21,15 @@ from tkinter import messagebox as MessageBox
 
 class ViewModel(object):  
     
+    """Manage the main application, controlling the front executions.
+
+    Returns:
+        _type_: _description_
+    """
+    
     instances = []
     file = None
-    select_text = ""
+    select_text: str = ""
     search_word: str = ""
     replace_word: str = ""
     search_list = list()
@@ -29,23 +38,26 @@ class ViewModel(object):
     tag_position: int = 0
     titles_dict: dict = {}
     sub_titles_dict: dict = {}
+    
     key_alt_r: bool = False
     key_control_l: bool = False
     index_start: str = "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
     #index_end: str = "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"
-    sub_index: str =  "■"
-    
+    SUB_INDEX: str =  "■ "
+    EMPTY_SYMBOL: str = 'ㅤ'
     
     def __init__(self) -> None:
-        #self.name = name
-        self.model = Model()#
+        """ Create a vinculate instance of Calculation, View.
+        
+        Define shortcuts.
+        """
+        
+        self.model = Model()
         self.calc = Calculation()
         self.view = View(self)
         self.instances.append(self.view)
-        # self.aux_menu = Aux_menu(self)
         self.search_view = None
-        
-                
+        self.idd_list = list()
         
          # SHORTCUTS:
         self.view.bind("<Control-n>", self.new_file)
@@ -65,11 +77,9 @@ class ViewModel(object):
         
         #self.view.bind("<Alt_R>", self.key_AltGr)
         
-        
         self.view.text_area.bind("<Control-Alt_R>", self.test123)
         # When is pressed, check and transform any key pressed. → key_AltGr
         
-
         self.view.text_area.bind("<KeyRelease-Return>", self.save_step)
         
         
@@ -80,6 +90,11 @@ class ViewModel(object):
         self.view.run()
         
     def callAux(self, event):
+        """ Create a Right-Click menu.
+
+        Args:
+            event (_type_): _description_
+        """
         self.left_menu = Aux_menu(self)
         
         try:
@@ -87,27 +102,6 @@ class ViewModel(object):
         finally:
             self.left_menu.popup_menu.grab_release()
             
-            # left_menu Before was called search_view
-        
-    def do_operations(self):
-        if self.view.text_area.selection_get():
-            
-            
-            self.select_text = self.view.text_area.selection_get()
-            # self.select_text = [*self.select_text]
-       
-            
-            
-            line, column = map(int, self.view.text_area.index('sel.first').split('.'))
-            position = (str(line) + "." + str(column))
-            self.view.text_area.delete('sel.first','sel.last')
-            
-            operation:str = self.select_text
-            
-            solution = self.calc.calculate(operation)
-            # Calculation.calculate(operation)
-         
-            self.view.text_area.insert(position,solution) 
        
         
     # def open_search(self):
@@ -115,12 +109,18 @@ class ViewModel(object):
     #     self.searchMenu.search()
         
         #self.model.apply_style(x, "fb"), self.select_text)
-    
 
-        
+   # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ KEYS EVENTS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■         
     # To get information about keys    
     def key_pressed(self, event):
-        
+        """ Read the event to get the key pressed.
+
+        Args:
+            event (Object): Event object.
+
+        Returns:
+            _type_: Stop the event.
+        """
         if event.keysym=='Alt_R':
             self.key_alt_r = True
             
@@ -252,12 +252,23 @@ class ViewModel(object):
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ FILE FUNCTIONS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
     
     def new_file(self, event=1):
+        """ Create a new empty file.
+
+        Args:
+            event (int, optional): _description_. Defaults to 1.
+        """
         self.view.set_title()
         self.file = None
         self.view.text_area.delete(1.0,tk.END)
 
 
     def open_file(self, event=1): 
+        """ Open a existent file.
+
+        Args:
+            event (int, optional): _description_. Defaults to 1.
+        """
+        # ! Test it for possible errors.
         self.file = askopenfilename(
             defaultextension=".txt", filetypes=[("All Files","*.*"), ("Text Documents","*.txt")]
             ) 
@@ -278,6 +289,12 @@ class ViewModel(object):
         pass
             
     def save_file(self, event=1): 
+        """Save the file using a existent document.
+
+        Args:
+            event (int, optional): _description_. Defaults to 1.
+        """
+        # ! Test it for possible errors.
         if self.file == None:   # Save as new file 
             self.save_as()        
         else:                   # Choose an existing file
@@ -287,6 +304,11 @@ class ViewModel(object):
             
             
     def save_as(self, event=1):
+        """ Save the document with a specific name in a specific location.
+
+        Args:
+            event (int, optional): _description_. Defaults to 1.
+        """
         self.file = asksaveasfilename(initialfile='Untitled.txt', defaultextension=".txt", 
                                       filetypes=[("All Files","*.*"), ("Text Documents","*.txt")]) 
         if self.file == "": 
@@ -299,6 +321,8 @@ class ViewModel(object):
             
             
     def close_app(self):
+        """ Handle closing app.
+        """
         self.view.destroy()
             
         
@@ -308,14 +332,11 @@ class ViewModel(object):
     def cut(self): 
         self.view.text_area.event_generate("<<Cut>>") 
 
-
     def copy(self): 
         self.view.text_area.event_generate("<<Copy>>") 
 
-
     def paste(self): 
         self.view.text_area.event_generate("<<Paste>>") 
-        
         
     def select_all(self, event=1):
         self.view.text_area.tag_add('sel', '1.0', 'end')    
@@ -330,6 +351,11 @@ class ViewModel(object):
     
     # It's sent a data with the code style.
     def take_text(self, style:str="nn" ):
+        """ Take selected text and change character by character to another style.
+
+        Args:
+            style (str, optional): Text style selected to apply. Defaults to "nn".
+        """
         if self.view.text_area.selection_get():
             
             # print("the style taken: ",style)
@@ -341,17 +367,24 @@ class ViewModel(object):
             self.view.text_area.delete('sel.first','sel.last')
             
             new_character_list = map(lambda x: self.model.apply_style(x, style), self.select_text)
-            #print(list(new_character_list))    #! LEAVE TO CHECK ERROrs
+            #print(list(new_character_list))    #! LEAVE TO CHECK ERROrs → TEST
             new_text = ''.join(new_character_list)
             # print(new_text)
             self.view.text_area.insert(position,new_text)       
     
     # Apply lines styles.
     def print_line(self, style:int=0):
+        """ Set a predesign style
+
+        Args:
+            style (int, optional): Type of Design selected. Defaults to 0.
+        """
         
         pointer = self.view.text_area.index(tk.INSERT)
         # print(style)
         line = ""
+        
+        # ? Better add too in Fonts file like CONSTANTS.
         if style == 1:
             line = "---------------------------------------------------------------------------------------------------------------"
         elif style == 2:
@@ -371,7 +404,11 @@ class ViewModel(object):
         
     # Apply title styles.    
     def print_title(self, style:str=0):
-        
+        """ Use selected text to create a Title Style.
+
+        Args:
+            style (int, optional): Type of Title selected. Defaults to 0.
+        """
         
         # CHECK IF HAVE A BREAK LINE, IF HAVE, APPLY 1 TIME EFFECT FOR EACH LINE
         # ADD THE EFFECTS IN OTHER FUNTION AT SIDE.
@@ -444,61 +481,51 @@ class ViewModel(object):
                 new_text = new_text.strip()
                 new_text = new_text.lower()
     
-            
             # print(new_text)
-            
             
             self.view.text_area.insert(position,new_text)
             self.find_index()
         
+  
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■ CALCULATIONS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     
         
-
             
         
     def print_time(self):       # 00:44 08/09/2022  date/time
+        """ Set the current date as a String.
+        """
         time = datetime.now()
         time = time.strftime("%H:%M %d/%m/%Y")
         pointer = self.view.text_area.index(tk.INSERT)
         self.view.text_area.insert(pointer,time)
         
     
-    def search(self):
-        # Check if use too memory by creating new instances.
-        # Must be limited the number of window to one: If is open...
-        self.enable_replace = tk.StringVar()
-        self.input_search = tk.StringVar()
-        self.input_replace = tk.StringVar()
+    def do_operations(self):
+        """ Resolve the selected Math operations.
+        """
         
-        
-        if isinstance(self.search_view, ExtraWindow):
-            print("Ya existe")
-            print(self.search_view)
-            self.search_view.focus_search()
-        #     search_input.focus_set()
-        
-        # if (self.instance_exists(self.search_view)):
-        #     print("Ya existe")
-        else:
-            print("No existe")
-            self.search_view = ExtraWindow(self, "Search")
-            self.instances.append(self.search_view)
-        
-        # if instance.ExtraWindow == ExtraWindow for instance in instances:
-        #     print("EXISTE")
-        #     # If the search_frame already exists, bring it to the front
-        #     self.search_view.lift()
-        # else:
-        #     print("No existe")
-        #     self.search_view = ExtraWindow(self, "Search")
-        
-        
-        
-        
-        
-        
-    
+        # ? Check if is better to create another funtion only to take selection elements.
+        if self.view.text_area.selection_get():
             
-    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ VIEW FUNCTIONS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     
+            self.select_text = self.view.text_area.selection_get()
+            # self.select_text = [*self.select_text]
+       
+            line, column = map(int, self.view.text_area.index('sel.first').split('.'))
+            position = (str(line) + "." + str(column))
+            self.view.text_area.delete('sel.first','sel.last')
+            
+            operation:str = self.select_text
+            
+            solution = self.calc.calculate(operation)
+            # Calculation.calculate(operation)
+         
+            self.view.text_area.insert(position,solution) 
+        
+        
+            
+            
+    # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ VIEW FUNCTIONS ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 
+        
     # Apply zoom in base font-size  
     def zoom_in(self, event=1):
         if self.view.n_font<32: self.view.n_font +=1
@@ -557,7 +584,7 @@ class ViewModel(object):
         # for key in 
         idx = "1.0"
         
-        print("Nuevo DICCIONARIOL:")
+        # print("Nuevo DICCIONARIOL:")
         while(idx):
             # Get position 1.0 only the first time.
             if temp_dict == {}:  # if list is empty, move one position in the list.
@@ -578,7 +605,7 @@ class ViewModel(object):
                     
                     temp_dict[line_content]=next_line
                     
-                    print(temp_dict)
+                    # print(temp_dict)
                     
                     
                 
@@ -601,10 +628,38 @@ class ViewModel(object):
         # def on_closing(self):
         # self.new_window.destroy()
         # self.controller.delete_instance(self)
-        self.view.set_index()
+        
+        self.update_index()
+        
+        
+    def update_index(self):
+        """Update the values inside of the index(Treeview.)
+        
+            1▪ Validate if self._index_active to draw the widget, if not, will be disabled.
+            
+            2▪ Define local variables: 
+                - EMPTY_SYMBOL: str → Define a empty space character 'ㅤ'
+                - index_number: int → Number of each index element.
+            
+            3▪ Build the Treeview widget, with a head text "Index",
+            one column of 200 width. Make the element sticky to NSW,
+            and a row height of 40 to leave space between the text lines.
+        """
+        
+        index_number: int = 0
+        
+        for element in self.view.index_tree.get_children():
+            self.view.index_tree.delete(element) 
+            #self.index_tree.delete()[element]
+            #self.view.index_tree.insert('', 'end', values="")
+   
+        for key, value in self.titles_dict.items():
+            index_number+=1
+            new_value = str(index_number)+ "."+ self.EMPTY_SYMBOL +str(key).replace(" ", self.EMPTY_SYMBOL)
+            iid = self.view.index_tree.insert("", tk.END, values=(new_value))          
+        
             
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ SEARCH FUNCTION ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
-
         
         # To add advance search → 
         # 1º funct: search all items and add it to and array, position value?
@@ -612,9 +667,77 @@ class ViewModel(object):
         # return the array and the total_value
         # 2º funct: allos move between array values with buttons next or back.
         # thierd?? replace the array position element for another and remove it.
-    
-    
+        
+        
+    def search(self):
+        """ Create a new Search_view window if not exist
+        Make focus on the current instance if exist.
+        """
+        self.enable_replace = tk.StringVar()
+        self.input_search = tk.StringVar()
+        self.input_replace = tk.StringVar()
+        
+        # If exist a instance, make focus.
+        if isinstance(self.search_view, ExtraWindow):
+            self.search_view.focus_search()
+        #     search_input.focus_set()
+        
+        # If not, Create a new one from ExtraWindow.
+        else:
+            print("No existe")
+            self.search_view = ExtraWindow(self, "Search")
+            self.instances.append(self.search_view)
+
+            
+            
+    def search_text(self):
+        """ Handle Search Request from Search_view.
+        
+        ▪ Take values from Search_view.
+        ▪ Decide if enable replace_text option.
+        ▪ Reset index, matches and search_list.
+        ▪ Show the selected result if exist.
+        ▪ Show a Warning window when 0 results.
+        """
+        self.search_word = self.input_search.get()
+        self.replace_word = self.input_replace.get()
+        
+        # Check if both inputs are filled and exist matches.
+        if self.search_word and self.replace_word and self.total_matches > 0:
+        
+            # Avoid change the word if replace_check == False
+            if self.enable_replace.get() == 'true':
+                self.replace_text()
+        
+        # Reset values
+        if self.search_word:
+            self.search_list.clear()
+            self.search_list_idx.clear()
+            self.view.text_area.tag_remove(tk.SEL, 1.0,"end-1c")
+            self.total_matches = 0
+            self.tag_position = 0
+            
+            # Find and take all results.
+            self.total_matches = self.search_all()
+            
+            # If find a result, show it. If not, Show Warning Message.
+            if self.total_matches > 0:
+                self.select_tag()
+                
+            else:
+                MessageWindow.show_message("Not results found", "warning")
+                
+                      
     def search_all(self):
+        """ Search "self.search_word" in the text area.
+        
+        ▪ For each result, add +1 to number_matches.
+        ▪ Add each match start index to "search_list_idx" list.
+        ▪ Add each match end index to "search_list" list.
+
+        Returns:
+            int: Quantity of results found.
+        """
         number_matches = 0
          #  Must return an Array with all positions and the number of them.
         
@@ -626,7 +749,6 @@ class ViewModel(object):
                 
             idx = self.view.text_area.search(self.search_word, idx, nocase=1, stopindex=tk.END) # Search next.
             lastidx = '%s+%dc' % (idx, len(self.search_word))       # define long word.    
-           
             
             if idx and lastidx:
                 number_matches += 1
@@ -637,51 +759,24 @@ class ViewModel(object):
                 break
             
         return number_matches #, self.search_list
-            
-            
-    def search_text(self):
-   
-       
-        self.search_word = self.input_search.get()
-        self.replace_word = self.input_replace.get()
-        
-        if self.search_word and self.replace_word and self.total_matches > 0:
-           # self.select_tag()
-        #! IF exist replace_word → Remplace word
-            self.replace_text()
-        
-        if self.search_word:
- 
-            self.search_list.clear()
-            self.search_list_idx.clear()
-            self.view.text_area.tag_remove(tk.SEL, 1.0,"end-1c")
-            self.total_matches = 0
-            self.tag_position = 0
-                
-
-            
-            self.total_matches = self.search_all()
-            
-            if self.total_matches > 0:
-                self.select_tag()
-            else:
-                #! NEED TO AVOID CLOSE WINDOW
-                MessageBox.showinfo("Search complete","No matches")
-                # print("0 MATCHES")
-        
+    
         
     def select_tag(self):
+        """ Use search_list index to select the desire String in the text area.
+        """
         self.search_view.updating_results()   
-        # '27.14+2c'  idx = 27.14 
         
-        # lastidx =  self.search_list_idx[self.tag_position]
-        #lastidx = lastidx.removesuffix('+c') 
-        # lastidx = lastidx[:lastidx.rfind("+")]
-        
-        lastidx = self.search_list[self.tag_position]
-        idx = self.search_list_idx[self.tag_position]
-
-        
+        # Before take index, check if self.search_list is empty.
+        if len(self.search_list) > 0:
+            lastidx = self.search_list[self.tag_position]
+            idx = self.search_list_idx[self.tag_position]
+        else:
+            self.total_matches = 0
+            self.tag_position = 0
+            lastidx = "1.0"
+            idx = "1.0"
+            
+        # '27.14+2c'     →       idx = 27.14 
         self.view.text_area.tag_remove(tk.SEL, 1.0, "end-1c")
         
         # Add new selection in the new find word.
@@ -697,6 +792,8 @@ class ViewModel(object):
         self.view.text_area.see(float(int(counter_list[0])))
         
     def replace_text(self): 
+        """ Get the position of the selected resul. Delete and inser the new word.
+        """
         lastidx = self.search_list[self.tag_position]
         idx = self.search_list_idx[self.tag_position]
         
@@ -704,26 +801,44 @@ class ViewModel(object):
         self.view.text_area.insert(idx,self.replace_word) 
         
         
-    def next_tag(self):      
-        if self.tag_position >= (self.total_matches-1):
-            self.tag_position = 0
+    def next_tag(self):
+        """ Allow to read all self.tag_position in loop.
+            if self.tag_position is >= self.total_matches-1:
+                True = 0
+                False → +1
+        """    
+        if len(self.search_list) > 0:
+            if self.tag_position >= (self.total_matches-1):
+                self.tag_position = 0
+            else:
+                self.tag_position += 1
         else:
-            self.tag_position += 1
+            self.tag_position = 0
     
         self.select_tag()
         
         
     def last_tag(self): 
-        if self.tag_position <= 0:
-            self.tag_position = (self.total_matches-1)
+        """ Allow to read all self.tag_position in loop.
+            if self.tag_position is <= 0:
+                True = self.total_matches-1
+                False → -1
+        """
+        if len(self.search_list) > 0:
+            if self.tag_position <= 0:
+                self.tag_position = (self.total_matches-1)
+            else:
+                self.tag_position -= 1
         else:
-            self.tag_position -= 1
+            self.tag_position = 0
             
         self.select_tag()   
         
         
         
-    def show_replace(self):       
+    def show_replace(self):      
+        """ Show or hide the replace input in Search_view
+        """ 
         if self.enable_replace.get() == 'true':
             self.search_view.add_replace_option()
         else:
@@ -746,30 +861,18 @@ class ViewModel(object):
     # def instance_exists(self, name):
     #     return any(name for instance in self.instances)    
     
-    def delete_instance(self, instance):
-        #print("LA instancia recibida es de "+ instance)
-        
-        
+    def delete_instance(self, instance: object = None):
+        """Find the instance and delete it.
+
+        Args:
+            instance (object, optional): _description_. Defaults to None.
+        """
         # if instance == "search_view":
         
         if isinstance(instance, ExtraWindow) and self.search_view:
             self.search_view = None
             gc.collect()
             
-        # if self.index_tree:
-        #     self.index_tree = None
-        #     gc.collect()    
-            
-            
-            
-        # if (self.search_view):
-        #     self.search_view = None
-        #     gc.collect()
-                
-        # if instance == "index":
-        #     pass
-        
-        
         
         
         
@@ -786,15 +889,15 @@ class ViewModel(object):
 
                     
     # TODO     Pending task    :
-    # Search inputs send to (search_word)  and (replace_word)
+    # Search inputs send to (search_word)  and (replace_word) 
     # For Search function:
     #   ▪ Take all text_area text and save it in lowercase.☑
     #   ▪ Disable styles too to "nn" style.☑
     #   ▪ Make and all positions where (search_word) in text_area.
     #   ▪ Send back the number or array elements to display it in (quantity_label).
-    #   ▪ Select the first position and allow move between with NEXT and BACK buttons.
+    #   ▪ Select the first position and allow move between with NEXT and BACK buttons. ☑
     
-    # For Replace function:
+    # For Replace function:   ☑
     #   ▪ If enable_replace = True, replace_word>'',  and Accept → pressed: 
     #       put on select text position.
     #   ▪ When (enable_replace) = False, (replace_word) = ''.
