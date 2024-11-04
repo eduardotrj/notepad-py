@@ -1,10 +1,12 @@
 import tkinter as tk 
 
 class Aux_menu(tk.Listbox):
-    # Right click menu to show fast options in base selected text:
     
-    # def __init__(self, parent, *args, **kwargs):
-    #     tk.Listbox.__init__(self, parent,*args, **kwargs)
+    """Create an instance of menu widget with the most important options.
+    
+    The Menu will be shown when the user makke right click.
+    """
+    # Right click menu to show fast options in base selected text:
     def __init__(self, controller):
         tk.Listbox.__init__(self)
         
@@ -68,7 +70,6 @@ class Aux_menu(tk.Listbox):
         self.popup_menu.add_command(label="Update Index", command=self.controller.find_index)
 
     #def aux_menu(self, x: int=0, y:int=0, entry=""):
-        
         
         #self.tk.call('tk_popup', self._w, x, y, entry)
         

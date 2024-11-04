@@ -548,6 +548,8 @@ class ViewModel(object):
         
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■ NIGHT MODE FUNCTION ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■     
     
+    # ! It must to change the Index BG too.
+    
     def switch_mode(self, event=1):     
         if self.view.day_mode == "🌙" :
             self.view.text_area.configure(bg="#2A2F2D", fg="white")
@@ -561,8 +563,15 @@ class ViewModel(object):
             
     # ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ INDEX ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
     
-    def go_select_title(self, index):
+    def go_select_title(self, index: str = ""):
+        """ Make focus on the element desired "Title".
         
+        Take the Title word, find the match in the dictionary Key
+        Take the Value for this key, text index, and use to focus it.
+
+        Args:
+            index (str): The Title Word.
+        """        
         idx = str(self.titles_dict[index] + 10.0)  # Add + 10 to center the focus.
         
         counter_list = []
@@ -580,6 +589,15 @@ class ViewModel(object):
  
  
     def find_index(self):
+        """ Update the information in self.titles_dict
+        
+        ▪ Create a new temporal Dictionary: temp_dict.
+        ▪ Find any title in the text by using "self.index_start".
+        ▪ Clean the title text and add it to temp_dict as key.
+        ▪ Add the referent index as value ad temp_dict.
+        ▪ Use temp_dict to update values in self.titles_dict.
+        ▪ Sort self.titles_dict and delete values which aren't in temp_dict.
+        """
         temp_dict: dict = {}
         # for key in 
         idx = "1.0"
@@ -590,8 +608,6 @@ class ViewModel(object):
             if temp_dict == {}:  # if list is empty, move one position in the list.
                 temp_dict[self.view._open_file]= 1.0
             else:
-                # Make sure the dict is sorted. Them, get the last position.
-                #? Because a new dict is created, not need to sort it.
                 # sorted_dict = {key: value for key, value in sorted(self.titles_dict.items(), key=lambda item: item[1])}
                 # idx = str(list(sorted_dict.values())[-1])
                 idx = str(list(temp_dict.values())[-1]) 
@@ -604,31 +620,21 @@ class ViewModel(object):
                     line_content = line_content.split('  ',-1)[1]
                     
                     temp_dict[line_content]=next_line
-                    
                     # print(temp_dict)
-                    
-                    
-                
                 else:
                     break
-
-
+                
         # Uptade self.titles_dict using the temp_dict
         self.titles_dict.update(temp_dict)
         self.titles_dict = {key: value for key, value in sorted(self.titles_dict.items(), key=lambda item: item[1])}
-        # Clean deleted elements:
         
+        # Clean deleted elements:
         for key in self.titles_dict.copy():
             if not key in temp_dict:
                 del self.titles_dict[key]
- 
         
-        print("DICCIONARIOL Updated:")
-        print(self.titles_dict)
-        # def on_closing(self):
-        # self.new_window.destroy()
-        # self.controller.delete_instance(self)
-        
+        # print("DICCIONARIOL Updated:")
+        # print(self.titles_dict)        
         self.update_index()
         
         
@@ -645,7 +651,6 @@ class ViewModel(object):
             one column of 200 width. Make the element sticky to NSW,
             and a row height of 40 to leave space between the text lines.
         """
-        
         index_number: int = 0
         
         for element in self.view.index_tree.get_children():
@@ -846,8 +851,9 @@ class ViewModel(object):
             
             
 
-    def auto_save(self):
-        # It should save the document as temporal file each x minutes.
+    def auto_save(self, time):
+        # It should save the document as temporal file each x minutes:
+        # Document_Name + "_temporal_" + date + .txt
         pass
     
     

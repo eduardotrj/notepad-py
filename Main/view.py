@@ -41,6 +41,7 @@ class View(tk.Tk):
         self._set_menu()
         self.set_file_menu()
         self.set_edit_menu()
+        self.set_insert_menu()
         self.set_view_menu()
         self.set_help_menu()
         self.set_night_option()
@@ -101,6 +102,12 @@ class View(tk.Tk):
         
         
         def item_selected(event):
+            """Find the element name in the event and sent it to
+            self.controller.go_select_title(record)
+
+            Args:
+                event (_type_): _description_
+            """
             # Take the text from the element clicked and send it to go_select_title().
             for selected_item in self.index_tree.selection():
                 item = self.index_tree.item(selected_item)
@@ -209,7 +216,8 @@ class View(tk.Tk):
         self.menu_bar = tk.Menu(self)
         self.config(menu=self.menu_bar)
         
-        
+        # ? Add Recents: Last 5 documents opened
+        # ? Add Example: Preview of a document showing all feactures like index.
     def set_file_menu(self):
         file_menu = tk.Menu(self.menu_bar, tearoff=0)   #command=lambda action="new": self.controller.define_action(action)
         file_menu.add_command(label="New", accelerator="Ctrl+N",command=self.controller.new_file)
@@ -220,7 +228,7 @@ class View(tk.Tk):
         file_menu.add_command(label="Exit", accelerator="Ctrl+.", command=self.controller.close_app) 
         self.menu_bar.add_cascade(label="File", menu=file_menu)
         
-        
+        # ? Add Undo / Redo options.
     def set_edit_menu(self):
         edit_menu = tk.Menu(self.menu_bar, tearoff=0)
         edit_menu.add_command(label="Cut", accelerator="Ctrl+X", command=self.controller.cut)
@@ -273,10 +281,38 @@ class View(tk.Tk):
         # 5, 6, 7 style are for sans style with ●, •, ·.
         edit_menu.add_cascade(label="Designs", menu=designs_menu)
         
-        edit_menu.add_command(label="Search", command=self.controller.search)   # ! .open_search
+        edit_menu.add_command(label="Search", command=self.controller.search)
+        edit_menu.add_command(label="Calculate", command=self.controller.do_operations)
         edit_menu.add_command(label="Date/Time", command=self.controller.print_time)
         self.menu_bar.add_cascade(label="Edit", menu=edit_menu)
         
+        
+        # TODO Expansion of the menu. Each option should call a extraView to show different options.
+        # • Header → Input to put text. Style of text. BG style. Size.
+        # • Footer → Style. If add any text or link.
+        # • Idex → Create a index using self.titles_dict + sub_titles_dict.
+        # • Table → Design a table with x Columns, x rows. Style. Size per cell.
+        # • Characters → A panel map with tabs with different special chars.
+        # • Emoji → A panel map with tabs with different emojis.
+        # • Picture → Option to select a image to ASCII. Define size. Define Style used chars.
+        # • Formula → To write a formula by using special characters.
+        # • QR Code → Input with Link/text. → Insert by ASCII.
+        # ? Move to here designs lines: self.controller.print_line().
+    def set_insert_menu(self):
+        insert_menu = tk.Menu(self.menu_bar, tearoff=0)
+        insert_menu.add_command(label="Header", accelerator="-", command=self.controller.test123)
+        insert_menu.add_command(label="Footer", accelerator="-", command=self.controller.test123)
+        insert_menu.add_command(label="Index", accelerator="-", command=self.controller.test123)
+        insert_menu.add_separator()
+        insert_menu.add_command(label="Table", accelerator="-", command=self.controller.test123)
+        insert_menu.add_command(label="Characters", accelerator="-", command=self.controller.test123)
+        insert_menu.add_command(label="Emoji", accelerator="-", command=self.controller.test123)
+        insert_menu.add_command(label="Picture", accelerator="-", command=self.controller.test123)
+        insert_menu.add_command(label="Formula", accelerator="-", command=self.controller.test123)
+        insert_menu.add_command(label="Chart", accelerator="-", command=self.controller.test123)
+        insert_menu.add_command(label="QR Code", accelerator="-", command=self.controller.test123)
+        self.menu_bar.add_cascade(label="Insert", menu=insert_menu)
+
         
     def set_view_menu(self):
         view_menu = tk.Menu(self.menu_bar, tearoff=0)

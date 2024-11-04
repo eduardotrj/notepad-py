@@ -19,6 +19,15 @@ class Model:
 # If have the position, apply the style character at the same position.
 # If not, leave the chart with the same value.
     def apply_style(self,chart:str ,style:str="nn") -> str:
+        """ Change a caracter for another with the same indx in Fonts.
+
+        Args:
+            chart (str): The chart received.
+            style (str, optional): The style received. Defaults to "nn".
+
+        Returns:
+            str: _description_
+        """
         new_chart = ""
         print(chart)
         for font in FONTS.values():
