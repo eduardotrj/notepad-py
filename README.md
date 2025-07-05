@@ -70,19 +70,26 @@ Use the modules and libraries:
 - [x] Night mode.
 - [x] Apply different text styles .txt.
 - [x] Search option.
+- [ ] Advanced search (to multi styles)
 - [x] Replace option.
 - [x] Special titles.
 - [x] Undo/Redo options.
 - [x] Advance Search for multicharacters.
 - [ ] Minimap.  **Tkinder counld not allowed**
-- [ ] Right click menu.
-- [ ] Index option.
-- [ ] Menu Options.
-- [ ] Calculator option.
+- [x] Right click menu.
+- [x] Index option.
+- [ ] Menu Options/Preferences.
+- [x] Calculator option. **Need to be improved**
+- [ ] List recognition and auto building.
+- [ ] Deep maths resolution.
+- [ ] Text Analysis tools.
+- [ ] AI
 - [ ] HTML/Markdown conversion.
 - [ ] Tabs.
 - [ ] Tables creator.
-- [ ] Color text.
+- [ ] Color text???.
+- [ ] QR Generator.
+- [ ] Images ASCII Generator.
   
 
 
